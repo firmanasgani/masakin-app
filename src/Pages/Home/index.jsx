@@ -1,6 +1,9 @@
+import Layout from "../Layout"
+
 const Home = () => {
     return (
-        <div className="h-screen flex flex-col m-10">
+      <Layout>
+          <div className="h-screen flex flex-col m-10">
               <div className="flex flex-row items-center justify-between gap-2 mt-10">
                 <div className="text-2xl font-bold">Hello Indra</div>
                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
@@ -16,6 +19,7 @@ const Home = () => {
 
 
         </div>
+      </Layout>
     )
 }
 
