@@ -24,7 +24,7 @@ export default function Welcome() {
               Explore curated recipes from all over the world!
             </p>
             <a
-              href="/register"
+              href="/signin"
               className="rounded-md inline-block w-60 py-2.5 px-6 align-middle bg-[#7E9F10] text-2xl"
             >
               Sign in
