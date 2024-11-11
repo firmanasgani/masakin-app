@@ -1,13 +1,19 @@
-import { Routes, Route } from 'react-router-dom';
-import DetailRecipes from './Pages/DetailRecipes';
+import { Route, Routes } from "react-router-dom";
+import Register from "./Pages/Register";
+import Signin from "./Pages/Signin";
+import Home from "./Pages/Home";
+import Welcome from "./Pages/Welcome";
+  import DetailRecipes from './Pages/DetailRecipes';
 
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/detail-recipes" element={<DetailRecipes />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<Welcome />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/signin" element={<Signin />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/detail-recipes" element={<DetailRecipes />} />
+    </Routes>
   );
 }
 
