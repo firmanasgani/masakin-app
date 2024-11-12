@@ -138,7 +138,7 @@ const RecipeDetails = () => {
               "https://food-fanatic-res.cloudinary.com/iu/s--v4QC2NtY--/t_full/cs_srgb,f_auto,fl_strip_profile.lossy,q_auto:420/v1629740866/beef-bulgogi-image.jpg"
             }
             alt={recipeName || "Bulgogi"}
-            className="w-full h-auto object-cover rounded-xl shadow-md h-36"
+            className="w-full h-auto object-cover rounded-xl shadow-md h-[140px]"
           />
         </div>
 
@@ -182,26 +182,26 @@ const RecipeDetails = () => {
           </div>
         </div>
 
-        <div className="flex-row text-[14.5px]">
-          <p className="text-left mt-4">
+        <div className="flex-row text-[14.5px] font-">
+          <p className="text-left mt-4 mb-3">
             {recipeDescription}
             Bulgogi adalah daging sapi panggang klasik khas Korea yang lezat,
             cocok dinikmati saat makan siang ataupun makan malam.
           </p>
-          <br />
-          <p>
+
+          <p className="mb-3">
             Dengan langkah-langkah yang sederhana, Bulgogi sangat mudah untuk
             dibuat.
           </p>
-          <br />
-          <p>
+
+          <p className="mb-3">
             Hidangkan Bulgogi bersama nasi dan kimchi untuk sensasi makan yang
             benar-benar autentik.
           </p>
         </div>
 
         <div
-          className="mt-4 text-center bg-[#DF184F] p-2 rounded-xl cursor-pointer"
+          className="mt-4 text-center bg-[#DF184F] p-2 rounded-xl cursor-pointer mt-9"
           onClick={openModal}>
           <span className="text-white font-normal">
             Lihat Video Panduan Memasak
