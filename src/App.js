@@ -3,7 +3,7 @@ import Register from "./Pages/Register";
 import Signin from "./Pages/Signin";
 import Home from "./Pages/Home";
 import Welcome from "./Pages/Welcome";
-  import DetailRecipes from './Pages/DetailRecipes';
+  import DetailRecipes from './Pages/DetailRecipes/DetailRecipes';
 
 function App() {
   return (
