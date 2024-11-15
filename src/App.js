@@ -3,7 +3,8 @@ import Register from "./Pages/Register";
 import Signin from "./Pages/Signin";
 import Home from "./Pages/Home";
 import Welcome from "./Pages/Welcome";
-  import DetailRecipes from './Pages/DetailRecipes/DetailRecipes';
+import DetailRecipes from './Pages/DetailRecipes/DetailRecipes';
+import NotFound from "./Pages/NotFound";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/signin" element={<Signin />} />
       <Route path="/home" element={<Home />} />
       <Route path="/detail-recipes" element={<DetailRecipes />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

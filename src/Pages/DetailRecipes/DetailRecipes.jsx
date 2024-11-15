@@ -9,8 +9,8 @@ import {
 import { faClock, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
 import topikoki from "../../Asset/topikoki.svg"; 
-import BottomNav from "../../Components/bottomNav";
 import ActiveTab from "../../Components/ActiveTab/ActiveTab";
+import Layout from "../Layout";
 
 const RecipeDetails = () => {
   const [recipeName, setRecipeName] = useState("");
@@ -124,7 +124,8 @@ const RecipeDetails = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-between bg-gray-100">
+   <Layout>
+     
       <div className="p-6 px-6 bg-white rounded-lg shadow-lg max-w-sm w-full">
         <div className="w-full flex justify-start ">
           <FontAwesomeIcon
@@ -236,9 +237,8 @@ const RecipeDetails = () => {
           <ActiveTab />
         </div>
 
-        <div><BottomNav /></div>
       </div>
-    </div>
+   </Layout>
   );
 };
 
