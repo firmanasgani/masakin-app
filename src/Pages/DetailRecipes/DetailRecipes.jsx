@@ -4,10 +4,13 @@ import {
   faArrowLeft,
   faStar,
   faStarHalfAlt,
-  faChessQueen,
   faBookBookmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+
+import topikoki from "../../Asset/topikoki.svg"; 
+import BottomNav from "../../Components/bottomNav";
+import ActiveTab from "../../Components/ActiveTab/ActiveTab";
 
 const RecipeDetails = () => {
   const [recipeName, setRecipeName] = useState("");
@@ -47,7 +50,7 @@ const RecipeDetails = () => {
     const emptyStars = 5 - fullStars - halfStar;
 
     return (
-      <>
+      <div>
         {Array(fullStars)
           .fill()
           .map((_, index) => (
@@ -69,7 +72,7 @@ const RecipeDetails = () => {
               className="text-gray-300"
             />
           ))}
-      </>
+      </div>
     );
   };
 
@@ -79,32 +82,36 @@ const RecipeDetails = () => {
     const emptyDiff = 3 - fullDiff - halfDiff;
 
     return (
-      <>
+      <div className="flex gap-1 ">
         {Array(fullDiff)
           .fill()
           .map((_, index) => (
-            <FontAwesomeIcon
+            <img
               key={`full-${index}`}
-              icon={faChessQueen}
-              className="text-purple-400 text-xl mr-1"
+              src={topikoki} 
+              alt="Topikoki"
+              className="flex"
             />
           ))}
         {halfDiff > 0 && (
-          <FontAwesomeIcon
-            icon={faChessQueen}
-            className="text-purple-400 text-xl"
+          <img
+            key="half"
+            src={topikoki} 
+            alt="Topikoki"
+            className=""
           />
         )}
         {Array(emptyDiff)
           .fill()
           .map((_, index) => (
-            <FontAwesomeIcon
+            <img
               key={`empty-${index}`}
-              icon={faChessQueen}
-              className="text-gray-300 text-xl"
+              src={topikoki} 
+              alt="Topikoki"
+              className="filter grayscale text-xl mr-1"
             />
           ))}
-      </>
+      </div>
     );
   };
 
@@ -133,12 +140,10 @@ const RecipeDetails = () => {
 
         <div className="mt-4 w-full">
           <img
-            src={
-              recipeImage ||
-              "https://food-fanatic-res.cloudinary.com/iu/s--v4QC2NtY--/t_full/cs_srgb,f_auto,fl_strip_profile.lossy,q_auto:420/v1629740866/beef-bulgogi-image.jpg"
-            }
+            src={recipeImage || "https://food-fanatic-res.cloudinary.com/iu/s--v4QC2NtY--/t_full/cs_srgb,f_auto,fl_strip_profile.lossy,q_auto:420/v1629740866/beef-bulgogi-image.jpg"}
             alt={recipeName || "Bulgogi"}
-            className="w-full h-auto object-cover rounded-xl shadow-md h-[140px]"
+            style={{ width: '100%', height: '145px' }}
+            className="w-full h-auto object-cover rounded-xl shadow-md"
           />
         </div>
 
@@ -148,7 +153,7 @@ const RecipeDetails = () => {
               <span className="font-bold text-lg">
                 <FontAwesomeIcon className="text-yellow-500 mr-2" />
               </span>
-              {renderStars(recipeStar || 4)}
+              {renderStars(recipeStar || 4.5)}
             </div>
 
             <div className="flex items-center justify-center text-gray-400 text-lg ml-2">
@@ -168,7 +173,7 @@ const RecipeDetails = () => {
               <span className="font-bold text-lg">
                 <FontAwesomeIcon className="gap-5" />
               </span>
-              {renderDifficulty(recipeDifficulty || 2)}
+              {renderDifficulty(recipeDifficulty || 2.1)}
             </div>
 
             <div className="text-center ml-4">
@@ -210,7 +215,7 @@ const RecipeDetails = () => {
 
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-            <div className="relative bg-white rounded-lg w-fit w-[450px] ">
+            <div className="relative bg-white rounded-lg w-fit " style={{ width: '460px'}}>
               <button
                 onClick={closeModal}
                 className="absolute top-[-33px] right-2 text-white text-2xl">
@@ -218,11 +223,8 @@ const RecipeDetails = () => {
               </button>
               <div className="flex justify-center items-center">
                 <iframe
-                  src={
-                    recipeVideo || "https://www.youtube.com/embed/74a_Y1QPACg"
-                  }
-                  width="100%"
-                  height="315"
+                  src={recipeVideo || "https://www.youtube.com/embed/74a_Y1QPACg"}
+                  style={{ width: '100%', height: '315px' }}
                   allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
                   title="Cooking Video"></iframe>
               </div>
@@ -230,13 +232,11 @@ const RecipeDetails = () => {
           </div>
         )}
 
-        <div className="mt-4 text-[14.5px] font-semibold">
-          <ul className="flex justify-between text-white ">
-            <li className="bg-[#7E9f10] p-2 rounded-xl">Bahan-bahan</li>
-            <li className="bg-[#7E9f10] p-2 rounded-xl">Alat-alat</li>
-            <li className="bg-[#7E9f10] p-2 rounded-xl">Cara Masak</li>
-          </ul>
+        <div>
+          <ActiveTab />
         </div>
+
+        <div><BottomNav /></div>
       </div>
     </div>
   );
