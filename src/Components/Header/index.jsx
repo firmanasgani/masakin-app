@@ -1,4 +1,9 @@
 
+setInterval(() => {
+    const date = new Date();
+    const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.querySelector('.time').innerHTML = time;
+}, 1000);
 
 const Header = () => {
     return (
@@ -7,7 +12,7 @@ const Header = () => {
                 <span className="material-icons">signal_cellular_alt</span>
                 <span className="material-icons">battery_full</span>
             </div>
-            <span>{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+            <span className="time">{}</span>
         </div>
     )
 }
