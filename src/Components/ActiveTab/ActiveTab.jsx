@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import serving from "../../Asset/serving.svg";
 
 function ActiveTab() {
-  const [activeTab, setActiveTab] = useState("Bahan-bahan"); // Keep activeTab as "Bahan-bahan"
+  const [activeTab, setActiveTab] = useState("Bahan-bahan");
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
@@ -10,7 +10,8 @@ function ActiveTab() {
     setActiveTab(tabName);
   };
 
-  const recipeData = {
+  
+  const recipeData = useMemo(() => ({
     "Bahan-bahan": [
       "500g Daging sapi tipis (biasanya menggunakan daging has dalam)",
       "3 sdm Kecap asin",
@@ -31,7 +32,7 @@ function ActiveTab() {
       "Talenan",
       "Sendok takar",
       "Spatula",
-      "Brock"
+      "Gunting",
     ],
     "Cara Masak": [
       "1. Potong daging sapi tipis-tipis melawan serat.",
@@ -41,11 +42,9 @@ function ActiveTab() {
       "5. Masukkan daging yang sudah dimarinasi dan masak hingga daging berubah warna dan matang merata, sekitar 5-7 menit.",
       "6. Sajikan Bulgogi dengan nasi putih hangat dan sayuran seperti selada atau kimchi.",
     ],
-  };
+  }), []); 
 
-  const servings = 4;
-
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     setError(null);
 
     const tabData = recipeData[activeTab] || [];
@@ -54,11 +53,10 @@ function ActiveTab() {
     } else {
       setError("Data not found for the active tab");
     }
-  };
-
+  }, [activeTab, recipeData]);
   useEffect(() => {
     fetchData();
-  }, [activeTab]);
+  }, [fetchData]);
 
   const renderDataList = (data) => {
     if (data.length > 0) {
@@ -92,7 +90,7 @@ function ActiveTab() {
           <div className="text-gray-400 mt-2 font-normal">
             <span className="flex items-center">
               <img src={serving} alt="serving" className="mr-1" />
-              {servings} Porsi
+              {4} Porsi
             </span>
           </div>
           <div>
