@@ -1,59 +1,41 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import serving from "../../Asset/serving.svg";
 
 function ActiveTab() {
   const [activeTab, setActiveTab] = useState("Bahan-bahan");
   const [data, setData] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageDescription, setImageDescription] = useState(null);
   const [error, setError] = useState(null);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
+    setSelectedImage(null);
+    setImageDescription(null);
   };
 
-  
-  const recipeData = useMemo(() => ({
-    "Bahan-bahan": [
-      "500g Daging sapi tipis (biasanya menggunakan daging has dalam)",
-      "3 sdm Kecap asin",
-      "1 sdm Gula merah",
-      "2 siung Bawang putih, cincang halus",
-      "1 sdm Minyak wijen",
-      "1/2 sdt Lada hitam",
-      "1 sdm Jahe parut",
-      "1 batang Daun bawang, iris tipis",
-      "1 sdm Kecap manis",
-      "1 sdm Air perasan lemon",
-      "1 sdm Gochujang (pasta cabai Korea, opsional)",
-    ],
-    "Alat-alat": [
-      "Wajan atau penggorengan",
-      "Mangkok besar untuk marinasi",
-      "Pisau tajam",
-      "Talenan",
-      "Sendok takar",
-      "Spatula",
-      "Gunting",
-    ],
-    "Cara Masak": [
-      "1. Potong daging sapi tipis-tipis melawan serat.",
-      "2. Campurkan kecap asin, gula merah, bawang putih, minyak wijen, lada hitam, jahe, daun bawang, kecap manis, air perasan lemon, dan gochujang (jika menggunakan) dalam mangkuk besar.",
-      "3. Masukkan daging ke dalam campuran bumbu dan aduk rata. Diamkan selama minimal 30 menit atau semalaman di dalam kulkas agar bumbu meresap.",
-      "4. Panaskan wajan atau penggorengan dengan api sedang dan tambahkan sedikit minyak.",
-      "5. Masukkan daging yang sudah dimarinasi dan masak hingga daging berubah warna dan matang merata, sekitar 5-7 menit.",
-      "6. Sajikan Bulgogi dengan nasi putih hangat dan sayuran seperti selada atau kimchi.",
-    ],
-  }), []); 
+  const handleItemClick = (image, description) => {
+    setSelectedImage(image);
+    setImageDescription(description);
+  };
 
   const fetchData = useCallback(() => {
     setError(null);
+    fetch("/Data/recipes.json")
+      .then((response) => response.json())
+      .then((recipeData) => {
+        const tabData = recipeData[activeTab] || [];
+        if (tabData.length > 0) {
+          setData(tabData);
+        } else {
+          setError("Data not found for the active tab");
+        }
+      })
+      .catch((err) => {
+        setError(`Error fetching data: ${err.message}`);
+      });
+  }, [activeTab]);
 
-    const tabData = recipeData[activeTab] || [];
-    if (tabData.length > 0) {
-      setData(tabData);
-    } else {
-      setError("Data not found for the active tab");
-    }
-  }, [activeTab, recipeData]);
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -61,8 +43,12 @@ function ActiveTab() {
   const renderDataList = (data) => {
     if (data.length > 0) {
       return data.map((item, index) => (
-        <li key={index} className="bg-purple-100 p-2 rounded-lg shadow-sm">
-          {item}
+        <li
+          key={index}
+          className="bg-purple-100 p-2 rounded-lg shadow-sm cursor-pointer"
+          onClick={() => handleItemClick(item.image, item.description)} 
+        >
+          {item.name}
         </li>
       ));
     } else {
@@ -79,7 +65,8 @@ function ActiveTab() {
             className={`p-2 px-4 rounded-xl cursor-pointer ${
               activeTab === tab ? "bg-[#7E9f10]" : "bg-white text-[#7E9f10]"
             }`}
-            onClick={() => handleTabClick(tab)}>
+            onClick={() => handleTabClick(tab)}
+          >
             {tab}
           </li>
         ))}
@@ -93,17 +80,11 @@ function ActiveTab() {
               {4} Porsi
             </span>
           </div>
+          
           <div>
             <h3 className="text-lg font-semibold">
               {activeTab === "Bahan-bahan" ? "Masakan" : activeTab}
             </h3>
-            <span className="text-sm text-gray-600">
-              {activeTab === "Bahan-bahan" ||
-              activeTab === "Alat-alat" ||
-              activeTab === "Cara Masak"
-                ? null
-                : ""}
-            </span>
           </div>
 
           <div className="flex justify-between items-center mt-2">
@@ -124,6 +105,27 @@ function ActiveTab() {
         <div>
           <ul className="list-none space-y-2 mt-5">{renderDataList(data)}</ul>
         </div>
+
+        {selectedImage && (
+          <div className="mt-4 fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white p-4 rounded-lg">
+              <img
+                src={selectedImage}
+                alt={selectedImage}
+                style={{ width: "100%", height: "auto" }}
+              />
+              <div>
+                <p>{imageDescription}</p>
+              </div>
+              <button
+                onClick={() => setSelectedImage(null)} 
+                className="mt-2 bg-red-500 text-white p-2 rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
