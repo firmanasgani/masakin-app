@@ -1,0 +1,746 @@
+{
+    "data": {
+        "item": {
+            "category": {
+                "created_at": "2024-11-19T06:21:58",
+                "description": "Famous for its balance of sweet, sour, salty, and spicy flavors. (Variant 1)",
+                "id": "1",
+                "name": "Thailand Variant 1",
+                "updated_at": "2024-11-19T06:21:58"
+            },
+            "created_at": "2024-11-19T06:22:03",
+            "description": "Delicious fried rice with traditional spices. (Variant 1)",
+            "difficulty": 1,
+            "estimated_time": "15 minutes",
+            "how_to_cooks": [
+                {
+                    "description": "Mix the ingredients in a bowl.",
+                    "id": 21,
+                    "images": [
+                        {
+                            "howtocook_id": 21,
+                            "id": 61,
+                            "img_url": "https://example.com/image1.jpg"
+                        },
+                        {
+                            "howtocook_id": 21,
+                            "id": 62,
+                            "img_url": "https://example.com/image2.jpg"
+                        },
+                        {
+                            "howtocook_id": 21,
+                            "id": 63,
+                            "img_url": "https://example.com/image3.jpg"
+                        }
+                    ],
+                    "recipe_id": 1,
+                    "steps": 9
+                },
+                {
+                    "description": "Pour the batter into a baking pan.",
+                    "id": 32,
+                    "images": [
+                        {
+                            "howtocook_id": 32,
+                            "id": 94,
+                            "img_url": "https://example.com/image1.jpg"
+                        },
+                        {
+                            "howtocook_id": 32,
+                            "id": 95,
+                            "img_url": "https://example.com/image2.jpg"
+                        },
+                        {
+                            "howtocook_id": 32,
+                            "id": 96,
+                            "img_url": "https://example.com/image3.jpg"
+                        }
+                    ],
+                    "recipe_id": 1,
+                    "steps": 6
+                },
+                {
+                    "description": "Mix the ingredients in a bowl.",
+                    "id": 73,
+                    "images": [
+                        {
+                            "howtocook_id": 73,
+                            "id": 217,
+                            "img_url": "https://example.com/image1.jpg"
+                        },
+                        {
+                            "howtocook_id": 73,
+                            "id": 218,
+                            "img_url": "https://example.com/image2.jpg"
+                        },
+                        {
+                            "howtocook_id": 73,
+                            "id": 219,
+                            "img_url": "https://example.com/image3.jpg"
+                        }
+                    ],
+                    "recipe_id": 1,
+                    "steps": 3
+                }
+            ],
+            "id": "1",
+            "img_banner": "https://example.com/images/nasi-goreng-1.jpg",
+            "ingredient_groups": [
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Bahan Utama",
+                    "id": 1,
+                    "ingredients": [
+                        {
+                            "description": "Aromatic",
+                            "id": 1,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 1",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Protein source",
+                            "id": 2,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 2",
+                            "takaran": "250 g"
+                        },
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 3,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 3",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 4,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 4",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Protein source",
+                            "id": 5,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 5",
+                            "takaran": "250 g"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Bumbu Dasar",
+                    "id": 2,
+                    "ingredients": [
+                        {
+                            "description": "Liquid base",
+                            "id": 6,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 1",
+                            "takaran": "1 cup"
+                        },
+                        {
+                            "description": "Protein source",
+                            "id": 7,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 2",
+                            "takaran": "250 g"
+                        },
+                        {
+                            "description": "Rich flavor",
+                            "id": 8,
+                            "image": "butter.jpg",
+                            "nama_bahan": "Butter Variant 3",
+                            "takaran": "100 g"
+                        },
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 9,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 4",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Seasoning",
+                            "id": 10,
+                            "image": "salt.jpg",
+                            "nama_bahan": "Salt Variant 5",
+                            "takaran": "1 tsp"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Marinasi Bulgogi",
+                    "id": 3,
+                    "ingredients": [
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 11,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 1",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Sweetener",
+                            "id": 12,
+                            "image": "sugar.jpg",
+                            "nama_bahan": "Sugar Variant 2",
+                            "takaran": "2 tbsp"
+                        },
+                        {
+                            "description": "Healthy fat",
+                            "id": 13,
+                            "image": "olive_oil.jpg",
+                            "nama_bahan": "Olive Oil Variant 3",
+                            "takaran": "3 tbsp"
+                        },
+                        {
+                            "description": "Protein source",
+                            "id": 14,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 4",
+                            "takaran": "250 g"
+                        },
+                        {
+                            "description": "Protein source",
+                            "id": 15,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 5",
+                            "takaran": "250 g"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Pelengkap",
+                    "id": 4,
+                    "ingredients": [
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 16,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 1",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Sweetener",
+                            "id": 17,
+                            "image": "sugar.jpg",
+                            "nama_bahan": "Sugar Variant 2",
+                            "takaran": "2 tbsp"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 18,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 3",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Binding agent",
+                            "id": 19,
+                            "image": "egg.jpg",
+                            "nama_bahan": "Egg Variant 4",
+                            "takaran": "3 pcs"
+                        },
+                        {
+                            "description": "Baking base",
+                            "id": 20,
+                            "image": "flour.jpg",
+                            "nama_bahan": "Flour Variant 5",
+                            "takaran": "500 g"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Saus dan Topping",
+                    "id": 5,
+                    "ingredients": [
+                        {
+                            "description": "Liquid base",
+                            "id": 21,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 1",
+                            "takaran": "1 cup"
+                        },
+                        {
+                            "description": "Rich flavor",
+                            "id": 22,
+                            "image": "butter.jpg",
+                            "nama_bahan": "Butter Variant 2",
+                            "takaran": "100 g"
+                        },
+                        {
+                            "description": "Sweetener",
+                            "id": 23,
+                            "image": "sugar.jpg",
+                            "nama_bahan": "Sugar Variant 3",
+                            "takaran": "2 tbsp"
+                        },
+                        {
+                            "description": "Baking base",
+                            "id": 24,
+                            "image": "flour.jpg",
+                            "nama_bahan": "Flour Variant 4",
+                            "takaran": "500 g"
+                        },
+                        {
+                            "description": "Rich flavor",
+                            "id": 25,
+                            "image": "butter.jpg",
+                            "nama_bahan": "Butter Variant 5",
+                            "takaran": "100 g"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Bumbu Tumis",
+                    "id": 6,
+                    "ingredients": [
+                        {
+                            "description": "Binding agent",
+                            "id": 26,
+                            "image": "egg.jpg",
+                            "nama_bahan": "Egg Variant 1",
+                            "takaran": "3 pcs"
+                        },
+                        {
+                            "description": "Liquid base",
+                            "id": 27,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 2",
+                            "takaran": "1 cup"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 28,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 3",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 29,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 4",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 30,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 5",
+                            "takaran": "1 large"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Kuah atau Kaldu",
+                    "id": 7,
+                    "ingredients": [
+                        {
+                            "description": "Rich flavor",
+                            "id": 31,
+                            "image": "butter.jpg",
+                            "nama_bahan": "Butter Variant 1",
+                            "takaran": "100 g"
+                        },
+                        {
+                            "description": "Liquid base",
+                            "id": 32,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 2",
+                            "takaran": "1 cup"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 33,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 3",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Liquid base",
+                            "id": 34,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 4",
+                            "takaran": "1 cup"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 35,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 5",
+                            "takaran": "1 large"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Adonan",
+                    "id": 8,
+                    "ingredients": [
+                        {
+                            "description": "Baking base",
+                            "id": 36,
+                            "image": "flour.jpg",
+                            "nama_bahan": "Flour Variant 1",
+                            "takaran": "500 g"
+                        },
+                        {
+                            "description": "Rich flavor",
+                            "id": 37,
+                            "image": "butter.jpg",
+                            "nama_bahan": "Butter Variant 2",
+                            "takaran": "100 g"
+                        },
+                        {
+                            "description": "Healthy fat",
+                            "id": 38,
+                            "image": "olive_oil.jpg",
+                            "nama_bahan": "Olive Oil Variant 3",
+                            "takaran": "3 tbsp"
+                        },
+                        {
+                            "description": "Protein source",
+                            "id": 39,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 4",
+                            "takaran": "250 g"
+                        },
+                        {
+                            "description": "Binding agent",
+                            "id": 40,
+                            "image": "egg.jpg",
+                            "nama_bahan": "Egg Variant 5",
+                            "takaran": "3 pcs"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Isian",
+                    "id": 9,
+                    "ingredients": [
+                        {
+                            "description": "Protein source",
+                            "id": 41,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 1",
+                            "takaran": "250 g"
+                        },
+                        {
+                            "description": "Rich flavor",
+                            "id": 42,
+                            "image": "butter.jpg",
+                            "nama_bahan": "Butter Variant 2",
+                            "takaran": "100 g"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 43,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 3",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Seasoning",
+                            "id": 44,
+                            "image": "salt.jpg",
+                            "nama_bahan": "Salt Variant 4",
+                            "takaran": "1 tsp"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 45,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 5",
+                            "takaran": "1 large"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Pemanis",
+                    "id": 10,
+                    "ingredients": [
+                        {
+                            "description": "Aromatic",
+                            "id": 46,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 1",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Liquid base",
+                            "id": 47,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 2",
+                            "takaran": "1 cup"
+                        },
+                        {
+                            "description": "Healthy fat",
+                            "id": 48,
+                            "image": "olive_oil.jpg",
+                            "nama_bahan": "Olive Oil Variant 3",
+                            "takaran": "3 tbsp"
+                        },
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 49,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 4",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Healthy fat",
+                            "id": 50,
+                            "image": "olive_oil.jpg",
+                            "nama_bahan": "Olive Oil Variant 5",
+                            "takaran": "3 tbsp"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Pengental",
+                    "id": 11,
+                    "ingredients": [
+                        {
+                            "description": "Aromatic",
+                            "id": 51,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 1",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Protein source",
+                            "id": 52,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 2",
+                            "takaran": "250 g"
+                        },
+                        {
+                            "description": "Baking base",
+                            "id": 53,
+                            "image": "flour.jpg",
+                            "nama_bahan": "Flour Variant 3",
+                            "takaran": "500 g"
+                        },
+                        {
+                            "description": "Seasoning",
+                            "id": 54,
+                            "image": "salt.jpg",
+                            "nama_bahan": "Salt Variant 4",
+                            "takaran": "1 tsp"
+                        },
+                        {
+                            "description": "Liquid base",
+                            "id": 55,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 5",
+                            "takaran": "1 cup"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Bahan Fermentasi",
+                    "id": 12,
+                    "ingredients": [
+                        {
+                            "description": "Baking base",
+                            "id": 56,
+                            "image": "flour.jpg",
+                            "nama_bahan": "Flour Variant 1",
+                            "takaran": "500 g"
+                        },
+                        {
+                            "description": "Protein source",
+                            "id": 57,
+                            "image": "chicken_breast.jpg",
+                            "nama_bahan": "Chicken Breast Variant 2",
+                            "takaran": "250 g"
+                        },
+                        {
+                            "description": "Seasoning",
+                            "id": 58,
+                            "image": "salt.jpg",
+                            "nama_bahan": "Salt Variant 3",
+                            "takaran": "1 tsp"
+                        },
+                        {
+                            "description": "Baking base",
+                            "id": 59,
+                            "image": "flour.jpg",
+                            "nama_bahan": "Flour Variant 4",
+                            "takaran": "500 g"
+                        },
+                        {
+                            "description": "Baking base",
+                            "id": 60,
+                            "image": "flour.jpg",
+                            "nama_bahan": "Flour Variant 5",
+                            "takaran": "500 g"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Bumbu Rendaman",
+                    "id": 13,
+                    "ingredients": [
+                        {
+                            "description": "Seasoning",
+                            "id": 61,
+                            "image": "salt.jpg",
+                            "nama_bahan": "Salt Variant 1",
+                            "takaran": "1 tsp"
+                        },
+                        {
+                            "description": "Rich flavor",
+                            "id": 62,
+                            "image": "butter.jpg",
+                            "nama_bahan": "Butter Variant 2",
+                            "takaran": "100 g"
+                        },
+                        {
+                            "description": "Rich flavor",
+                            "id": 63,
+                            "image": "butter.jpg",
+                            "nama_bahan": "Butter Variant 3",
+                            "takaran": "100 g"
+                        },
+                        {
+                            "description": "Binding agent",
+                            "id": 64,
+                            "image": "egg.jpg",
+                            "nama_bahan": "Egg Variant 4",
+                            "takaran": "3 pcs"
+                        },
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 65,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 5",
+                            "takaran": "2 cloves"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Penambah Tekstur",
+                    "id": 14,
+                    "ingredients": [
+                        {
+                            "description": "Liquid base",
+                            "id": 66,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 1",
+                            "takaran": "1 cup"
+                        },
+                        {
+                            "description": "Healthy fat",
+                            "id": 67,
+                            "image": "olive_oil.jpg",
+                            "nama_bahan": "Olive Oil Variant 2",
+                            "takaran": "3 tbsp"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 68,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 3",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Sweetener",
+                            "id": 69,
+                            "image": "sugar.jpg",
+                            "nama_bahan": "Sugar Variant 4",
+                            "takaran": "2 tbsp"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 70,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 5",
+                            "takaran": "1 large"
+                        }
+                    ],
+                    "updated_at": null
+                },
+                {
+                    "created_at": "2024-11-19T06:22:03",
+                    "group_name": "Bahan Garnish",
+                    "id": 15,
+                    "ingredients": [
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 71,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 1",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Flavor enhancer",
+                            "id": 72,
+                            "image": "garlic.jpg",
+                            "nama_bahan": "Garlic Variant 2",
+                            "takaran": "2 cloves"
+                        },
+                        {
+                            "description": "Aromatic",
+                            "id": 73,
+                            "image": "onion.jpg",
+                            "nama_bahan": "Onion Variant 3",
+                            "takaran": "1 large"
+                        },
+                        {
+                            "description": "Binding agent",
+                            "id": 74,
+                            "image": "egg.jpg",
+                            "nama_bahan": "Egg Variant 4",
+                            "takaran": "3 pcs"
+                        },
+                        {
+                            "description": "Liquid base",
+                            "id": 75,
+                            "image": "milk.jpg",
+                            "nama_bahan": "Milk Variant 5",
+                            "takaran": "1 cup"
+                        }
+                    ],
+                    "updated_at": null
+                }
+            ],
+            "name": "Nasi Goreng Variant 1",
+            "rating": 1,
+            "ratings": {},
+            "tools": [],
+            "video_url": "https://example.com/videos/nasi-goreng-1.mp4"
+        },
+        "links": {
+            "self": "http://127.0.0.1:5000/recipes/1"
+        }
+    },
+    "status":"success"
+}

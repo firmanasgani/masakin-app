@@ -12,7 +12,7 @@ const BottomNavigation = () => {
           <span className="material-icons">bookmarks</span>
           <span className="text-xs">Bookmarks</span>
         </a>
-        <a className="flex flex-col items-center text-gray-500" href="/detail-recipes">
+        <a className="flex flex-col items-center text-gray-500" href="/detail-recipes/1">
           <span className="material-icons">book</span>
           <span className="text-xs">Recipes</span>
         </a>

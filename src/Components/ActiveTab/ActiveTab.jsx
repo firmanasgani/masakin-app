@@ -1,132 +1,226 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import serving from "../../Asset/serving.svg";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-function ActiveTab() {
-  const [activeTab, setActiveTab] = useState("Bahan-bahan");
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
+const IngredientsList = ({recipe}) => {
+  const [steps, setSteps] = useState([]);
+  const [ingredients, setIngredients] = useState(null); // Ingredients from the first API
+  const [additionalIngredients, setAdditionalIngredients] = useState([]); // Ingredients from the second API
+  const [tools, setTools] = useState([]); // Tools from the first API
+  const [additionalTools, setAdditionalTools] = useState([]); // Additional tools from the second API
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // General error state for fetching recipe details
+  const [ingredientsError, setIngredientsError] = useState(null); // Error state for ingredients
+  const [toolsError, setToolsError] = useState(null); // Error state for tools
+  const [activeTab, setActiveTab] = useState("Cara masak"); // Tab yang aktif: caraMasak, bahan, atau alat
 
-  const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
+  console.log(ingredients, "recipe") 
+
+
+  const [id] = useState(useParams().id);
+
+
+
+  // Fetch recipe details (steps, ingredients, and tools) from the first API
+  const fetchRecipeDetails = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`https://masakin-api-production.up.railway.app/recipes/${id}`);
+      console.log(response.data.data.item.ingredient_groups, "reponse");
+      
+      if (response.data) {
+        setSteps(response.data.data.item.steps || []);
+        setIngredients(response.data.data.item.ingredient_groups || []); // Ingredients from the first API
+        setTools(response.data.data.item.tools || []); // Tools from the first API
+      }
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError("Failed to fetch recipe details"); // General error message
+    }
   };
 
-  
-  const recipeData = useMemo(() => ({
-    "Bahan-bahan": [
-      "500g Daging sapi tipis (biasanya menggunakan daging has dalam)",
-      "3 sdm Kecap asin",
-      "1 sdm Gula merah",
-      "2 siung Bawang putih, cincang halus",
-      "1 sdm Minyak wijen",
-      "1/2 sdt Lada hitam",
-      "1 sdm Jahe parut",
-      "1 batang Daun bawang, iris tipis",
-      "1 sdm Kecap manis",
-      "1 sdm Air perasan lemon",
-      "1 sdm Gochujang (pasta cabai Korea, opsional)",
-    ],
-    "Alat-alat": [
-      "Wajan atau penggorengan",
-      "Mangkok besar untuk marinasi",
-      "Pisau tajam",
-      "Talenan",
-      "Sendok takar",
-      "Spatula",
-      "Gunting",
-    ],
-    "Cara Masak": [
-      "1. Potong daging sapi tipis-tipis melawan serat.",
-      "2. Campurkan kecap asin, gula merah, bawang putih, minyak wijen, lada hitam, jahe, daun bawang, kecap manis, air perasan lemon, dan gochujang (jika menggunakan) dalam mangkuk besar.",
-      "3. Masukkan daging ke dalam campuran bumbu dan aduk rata. Diamkan selama minimal 30 menit atau semalaman di dalam kulkas agar bumbu meresap.",
-      "4. Panaskan wajan atau penggorengan dengan api sedang dan tambahkan sedikit minyak.",
-      "5. Masukkan daging yang sudah dimarinasi dan masak hingga daging berubah warna dan matang merata, sekitar 5-7 menit.",
-      "6. Sajikan Bulgogi dengan nasi putih hangat dan sayuran seperti selada atau kimchi.",
-    ],
-  }), []); 
+  // Fetch ingredients from the second API
+//   const fetchAdditionalIngredients = async () => {
+//     try {
+//       const response = await axios.get(`https://masakin-api-production.up.railway.app/recipes/${id}/ingredients`);
+//       if (response.data) {
+//         setAdditionalIngredients(response.data.ingredients || []);
+//         setIngredientsError(null); // Clear any previous errors
+//       }
+//     } catch (err) {
+//       setIngredientsError("Failed to fetch ingredients"); // Specific error for ingredients
+//       setAdditionalIngredients([]); // Clear previous data
+//     }
+//   };
 
-  const fetchData = useCallback(() => {
-    setError(null);
-
-    const tabData = recipeData[activeTab] || [];
-    if (tabData.length > 0) {
-      setData(tabData);
-    } else {
-      setError("Data not found for the active tab");
+  // Fetch tools from the second API
+  const fetchTools = async () => {
+    try {
+      const response = await axios.get(`https://masakin-api-production.up.railway.app/recipes/${id}/tools`);
+      if (response.data) {
+        setAdditionalTools(response.data.tools || []);
+        setToolsError(null); // Clear any previous errors
+      }
+    } catch (err) {
+      setToolsError("Failed to fetch tools"); // Specific error for tools
+      setAdditionalTools([]); // Clear previous data
     }
-  }, [activeTab, recipeData]);
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  };
 
-  const renderDataList = (data) => {
-    if (data.length > 0) {
-      return data.map((item, index) => (
-        <li key={index} className="bg-purple-100 p-2 rounded-lg shadow-sm">
-          {item}
-        </li>
-      ));
-    } else {
-      return <li>No data available</li>;
+  useEffect(() => {
+    // fetchRecipeDetails(); // Fetch initial data (ingredients, steps, and tools from the first API)
+    // fetchAdditionalIngredients(); // Fetch additional ingredients from the second API
+    // fetchTools(); // Fetch tools from the second API
+    setIngredients(recipe.ingredient_groups);
+    setLoading(false);
+    console.log(recipe.ingredient_groups, "ingredient_groups");
+  }, [id, recipe]);
+
+  // If the data is still loading, show a loading state
+  if (loading && !error) return <div className="text-center text-xl">Loading...</div>;
+  
+  // Show a general error message if the fetch failed
+  if (error) return <div className="text-center text-red-600">{error}</div>;
+
+  const parseImageUrls = (img_urls) => {
+    try {
+      if (typeof img_urls === "string") {
+        return JSON.parse(img_urls);
+      } else if (Array.isArray(img_urls)) {
+        return img_urls;
+      }
+    } catch (e) {
+      console.error("Error parsing img_urls:", e);
+    }
+    return [];
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "bahan":
+        return (
+          <div>
+            {/* Ingredients from the first API */}
+            {/* <ul className="space-y-2">
+              {ingredients.length > 0 ? (
+                ingredients.map((ingredient, index) => (
+                  <li key={index} className="bg-red-500 p-4 rounded-lg shadow-md">
+                    <p>{ingredient.name}</p>
+                  </li>
+                ))
+              ) : (
+                <p>No ingredients available from the first API</p>
+              )}
+            </ul> */}
+
+            {/* Error or data from the second API */}
+            <ul className="space-y-2 mt-2">
+                  { ingredients && (
+                    ingredients.map((ingredient_group, index) => (
+                      <li key={index} className="bg-purple-100 p-4 rounded-lg shadow-md">
+                        <p>{ingredient_group.group_name}</p>
+                        
+                      </li>
+                    ))
+                  ) 
+                  }
+                </ul>
+          </div>
+        );
+      case "alat":
+        return (
+          <div>
+            {/* Tools from the first API */}
+            <ul className="space-y-2">
+              {tools.length > 0 ? (
+                tools.map((tool, index) => (
+                  <li key={index} className="bg-purple-100 p-1 rounded-lg shadow-md">
+                    <p>{tool.name}</p>
+                  </li>
+                ))
+              ) : (
+                <p>No tools available from the first API</p>
+              )}
+            </ul>
+
+            {/* Error or data from the second API */}
+            {toolsError ? (
+              <p className="text-red-600">{toolsError}</p>
+            ) : (
+              <>
+                <ul className="space-y-2 mt-2">
+                  {additionalTools.length > 0 ? (
+                    additionalTools.map((tool, index) => (
+                      <li key={index} className="bg-purple-100 p-1 rounded-lg shadow-md">
+                        <p>{tool.name}</p>
+                      </li>
+                    ))
+                  ) : (
+                    <p>No additional tools available</p>
+                  )}
+                </ul>
+              </>
+            )}
+          </div>
+        );
+      case "caraMasak":
+      default:
+        return (
+          <ol className="space-y-2">
+            {steps.length > 0 ? (
+              steps.map((step) => (
+                <li key={step.id} className="bg-purple-100 p-2 rounded-lg shadow-md">
+                  <p>{step.description}</p>
+                  {step.img_urls && parseImageUrls(step.img_urls).length > 0 && (
+                    <div className="mt-2">
+                      {parseImageUrls(step.img_urls).map((img, index) => (
+                        <img key={index} src={img} alt={`Step ${step.id}`} className="mt-2 rounded-lg shadow-md"/>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              ))
+            ) : (
+              <p>No cooking steps available</p>
+            )}
+          </ol>
+        );
     }
   };
 
   return (
-    <div className="mt-4 text-[14.5px] font-semibold">
-      <ul className="flex justify-between text-white">
-        {["Bahan-bahan", "Alat-alat", "Cara Masak"].map((tab) => (
-          <li
-            key={tab}
-            className={`p-2 px-4 rounded-xl cursor-pointer ${
-              activeTab === tab ? "bg-[#7E9f10]" : "bg-white text-[#7E9f10]"
-            }`}
-            onClick={() => handleTabClick(tab)}>
-            {tab}
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-4 p-4">
-        <div className="flex justify-between items-center">
-          <div className="text-gray-400 mt-2 font-normal">
-            <span className="flex items-center">
-              <img src={serving} alt="serving" className="mr-1" />
-              {4} Porsi
-            </span>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold">
-              {activeTab === "Bahan-bahan" ? "Masakan" : activeTab}
-            </h3>
-            <span className="text-sm text-gray-600">
-              {activeTab === "Bahan-bahan" ||
-              activeTab === "Alat-alat" ||
-              activeTab === "Cara Masak"
-                ? null
-                : ""}
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center mt-2">
-            {activeTab === "Bahan-bahan" ||
-            activeTab === "Alat-alat" ||
-            activeTab === "Cara Masak" ? (
-              <span className="text-sm text-gray-400 font-normal">
-                {activeTab === "Bahan-bahan" && `${data.length} bahan`}
-                {activeTab === "Alat-alat" && `${data.length} alat`}
-                {activeTab === "Cara Masak" && `${data.length} langkah`}
-              </span>
-            ) : null}
-          </div>
-        </div>
-
-        {error && <p className="text-red-500 mt-2">{`Error: ${error}`}</p>}
-
-        <div>
-          <ul className="list-none space-y-2 mt-5">{renderDataList(data)}</ul>
-        </div>
+    <div className="container mx-auto p-2">
+      <h2 className="text-lg font-semibold text-center mb-6">Recipe Details</h2>
+      
+      <div className="flex justify-center justify-between mb-6 text-[#7E9f10]">
+        <button
+          onClick={() => setActiveTab("bahan")}
+          className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 
+            ${activeTab === "bahan" ? "bg-[#7E9f10] text-white" : "bg-white text-[#7E9f10]"}`}
+        >
+          Bahan-bahan
+        </button>
+        <button
+          onClick={() => setActiveTab("alat")}
+          className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 
+            ${activeTab === "alat" ? "bg-[#7E9f10] text-white" : "bg-white text-[#7E9f10]"}`}
+        >
+          Alat
+        </button>
+        <button
+          onClick={() => setActiveTab("caraMasak")}
+          className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 
+            ${activeTab === "caraMasak" ? "bg-[#7E9f10] text-white" : "bg-white text-[#7E9f10]"}`}
+        >
+          Cara Masak
+        </button>
       </div>
+
+      {/* Render content based on active tab */}
+      <div>{renderTabContent()}</div>
     </div>
   );
-}
+};
 
-export default ActiveTab;
+export default IngredientsList;
