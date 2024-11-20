@@ -1,9 +1,11 @@
 import backgroundImage from "../../welcome-background.png";
 import appLogo from "../../logo.svg";
+import Header from "../../Components/Header";
 
 export default function Welcome() {
   return (
     <div className="max-w-sm mx-auto">
+      <Header />
       <div
         style={{
           backgroundImage: `url(${backgroundImage}),linear-gradient(0deg, rgba(0, 0, 0, 0.7) 20%, rgba(130, 105, 132, 0.404) 40%, rgba(255, 255, 255, 0) 100%)`,
