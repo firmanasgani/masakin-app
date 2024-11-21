@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
 // import GoogleIcon from "@mui/icons-material/Google";
 // import FacebookIcon from "@mui/icons-material/Facebook";
 
@@ -8,6 +9,14 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
+
+  const { handleLogin, user, error } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, [user]);
 
   const navigate = useNavigate();
 
@@ -18,10 +27,10 @@ const LoginForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    navigate("/home");
+
+    await handleLogin(formData.email, formData.password);
   };
 
   return (
@@ -31,6 +40,11 @@ const LoginForm = () => {
           Welcome,
         </h2>
         <p className="text-gray-600 text-center mb-6">Are you ready to cook?</p>
+        {error && (
+          <div className="bg-red-500 py-1.5 mb-2.5 text-gray-100 rounded-md text-center">
+            {error.message}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700">Email</label>
