@@ -14,7 +14,7 @@ const NotFound = () => {
             Halaman yang Anda cari tidak ditemukan.
           </p>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
           >
             Kembali ke Beranda

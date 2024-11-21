@@ -5,7 +5,7 @@ const Input = ({placeholder, value, onChange}) => {
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className="bg-gray-200 p-2 text-sm rounded-md w-full outline-none"
+      className="border-2 p-2 text-sm rounded-md w-full outline-none"
     />
   );
 };

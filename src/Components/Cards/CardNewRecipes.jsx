@@ -1,30 +1,44 @@
-const CardNewRecipes = ({ food }) => {
+import { Link } from "react-router-dom";
+
+const CardNewRecipes = ({ recipe }) => {
+  const totalRating =
+    recipe.rating.length > 0
+      ? recipe.rating.map((rating) => rating.stars).reduce((a, b) => a + b, 0)
+      : 0;
+  const averageRating = totalRating / recipe.rating.length;
+  const numberRating = isNaN(averageRating) ? 0 : Math.round(averageRating); // Pastikan nilai bulat
+
   return (
-    <div className="flex flex-col p-2 bg-white rounded-md shadow-md ">
+    <Link
+      to={`/detail-recipes/${recipe.id}`}
+      className="min-w-[200px] max-w-[200px] h-[300px] bg-gray-200 rounded-lg shadow-md flex flex-col justify-between items-center p-4"
+    >
+      {/* Gambar */}
       <img
-        src={food.img_banner}
-        alt={food.name}
-        className="rounded-t-md object-fit h-16"
+        src={recipe.img_banner}
+        alt={recipe.name}
+        className="rounded-t-md object-cover h-[100px] w-full"
       />
-      <div className="font-bold text-center text-sm text-ellipsis line-clamp-2">
-        {food.name}
-      </div>
-      <div className="flex flex-row gap-1">
-        {[1, 2, 3, 4, 5].map((star, j) => (
-          <span
-            key={j}
-            className={j <= food.rating ? "text-yellow-500" : "text-gray-400"}
-          >
-            &#9733;
+
+      {/* Nama Resep */}
+      <div className="font-bold text-center text-sm mt-2">{recipe.name}</div>
+
+      {/* Rating */}
+      <div className="flex gap-1 justify-center text-yellow-500 text-sm">
+        {Array.from({ length: 5 }, (_, j) => (
+          <span key={j}>
+            {j < numberRating ? "★" : "☆"}
           </span>
         ))}
       </div>
-      <div className="mt-4 flex flex-row items-center justify-between">
-        <span className="text-gray-500 text-sm">30 menit</span>
-        <span className="text-gray-500">
+
+      {/* Footer */}
+      <div className="mt-auto flex justify-between w-full text-gray-500 text-sm">
+        <span>{recipe.estimated_time}</span>
+        <span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -38,7 +52,7 @@ const CardNewRecipes = ({ food }) => {
           </svg>
         </span>
       </div>
-    </div>
+    </Link>
   );
 };
 
