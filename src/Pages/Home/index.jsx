@@ -4,10 +4,12 @@ import Layout from "../Layout";
 import CardNewRecipes from "../../Components/Cards/CardNewRecipes";
 import { AuthContext } from "../../Context/AuthContext";
 import { Navigate } from "react-router-dom";
+import { useLatestRecipesFetch } from "../../hooks/useLatestRecipesFetch";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
   const [activeCategory, setActiveCategory] = useState("Semua");
+  const { recipes: latestRecipes, loading } = useLatestRecipesFetch();
 
   if (!user) {
     return <Navigate to={"/signin"} replace />;
@@ -41,7 +43,9 @@ const Home = () => {
               "Philippines",
               "India",
             ].map((country, i) => (
-              <div
+              <a
+                role="button"
+                href="#"
                 key={i}
                 className={`px-2 py-1 rounded ${
                   activeCategory === country
@@ -51,7 +55,7 @@ const Home = () => {
                 onClick={() => setActiveCategory(country)}
               >
                 {country}
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -59,12 +63,11 @@ const Home = () => {
         <div className="flex flex-row  gap-2 mt-10">
           <h1 className="text-xl font-bold">Resep Baru</h1>
         </div>
-        <div className="flex flex-col flex-wrap gap-2 mt-5 overflow-x-auto scrollbar-none  no-scrollbar h-[1200px]">
-          {["Soto Ayam Lamongan", "Sushi", "Kimbab", "Pad Thai", "Soto"].map(
-            (food, i) => (
+        <div className="flex flex-row gap-x-2 mt-5 overflow-x-scroll overflow-y-hidden no-scrollbar z-50 h-[200rem]">
+          {!loading &&
+            latestRecipes.items.map((food, i) => (
               <CardNewRecipes key={i} food={food} />
-            )
-          )}
+            ))}
         </div>
         <div className="flex flex-row  gap-2 mt-10">
           <h1 className="text-xl font-bold">Resep Populer</h1>

@@ -34,4 +34,17 @@ export default {
       })
     ).json();
   },
+  async fetchLatestRecipes() {
+    const accessToken = localStorage.getItem("access_token");
+
+    return await (
+      await fetch(`${API_URL}/recipes`, {
+        ...defaultOptions,
+        headers: {
+          ...defaultOptions.headers,
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+    ).json();
+  },
 };
