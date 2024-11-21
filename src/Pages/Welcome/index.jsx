@@ -1,4 +1,4 @@
-import backgroundImage from "../../welcome-background.png";
+
 import appLogo from "../../logo.svg";
 import { Link } from "react-router-dom";
 

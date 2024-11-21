@@ -11,13 +11,13 @@ const CardNewRecipes = ({ recipe }) => {
   return (
     <Link
       to={`/detail-recipes/${recipe.id}`}
-      className="min-w-[200px] max-w-[200px] h-[300px] bg-gray-200 rounded-lg shadow-md flex flex-col justify-between items-center p-4"
+      className="min-w-[200px] max-w-[200px] h-[250px] bg-gray-100 rounded-lg shadow-md flex flex-col justify-between items-center p-4"
     >
       {/* Gambar */}
       <img
         src={recipe.img_banner}
         alt={recipe.name}
-        className="rounded-t-md object-cover h-[100px] w-full"
+        className="rounded-md object-cover h-[100px] w-full"
       />
 
       {/* Nama Resep */}

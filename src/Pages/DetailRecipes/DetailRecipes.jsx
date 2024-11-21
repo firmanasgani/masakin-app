@@ -17,7 +17,6 @@ import { useParams } from "react-router-dom";
 
 const RecipeDetails = () => {
   const [recipe, setRecipe] = useState(null);
-  const [ratings, setRatings] = useState(null); // State to store ratings
   const [id] = useState(useParams().id);
   const [recipeName, setRecipeName] = useState("");
   const [recipeImage, setRecipeImage] = useState("");
