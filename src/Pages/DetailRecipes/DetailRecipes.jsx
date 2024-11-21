@@ -100,8 +100,7 @@ const RecipeDetails = () => {
   };
 
  const renderDifficulty = (difficulty) => {
-  // Fallback untuk nilai difficulty yang tidak valid
-  difficulty = difficulty != null && difficulty >= 0 && difficulty <= 3 ? difficulty : 2; // fallback ke 2 jika tidak valid
+  difficulty = difficulty > 3 ? 3 : difficulty; // set difficulty ke 3 jika lebih dari 3
   
   const fullDiff = Math.floor(difficulty);
   const halfDiff = difficulty % 1 >= 0.5 ? 1 : 0;
@@ -135,6 +134,7 @@ const RecipeDetails = () => {
     </div>
   );
 };
+
 
 
   const openModal = () => {
