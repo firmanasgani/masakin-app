@@ -1,86 +1,54 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import serving from "../../Asset/serving.svg";
 
-const IngredientsList = ({recipe}) => {
-  const [steps, setSteps] = useState([]);
-  const [ingredients, setIngredients] = useState(null); // Ingredients from the first API
-  const [additionalIngredients, setAdditionalIngredients] = useState([]); // Ingredients from the second API
-  const [tools, setTools] = useState([]); // Tools from the first API
-  const [additionalTools, setAdditionalTools] = useState([]); // Additional tools from the second API
+const IngredientsList = ({ recipe }) => {
+  const [howToCook, setHowToCook] = useState(null);
+  const [ingredients, setIngredients] = useState(null);
+  const [tools, setTools] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // General error state for fetching recipe details
-  const [ingredientsError, setIngredientsError] = useState(null); // Error state for ingredients
-  const [toolsError, setToolsError] = useState(null); // Error state for tools
-  const [activeTab, setActiveTab] = useState("Cara masak"); // Tab yang aktif: caraMasak, bahan, atau alat
+  const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState("caraMasak");
 
-  console.log(ingredients, "recipe") 
+  const { id } = useParams();
 
-
-  const [id] = useState(useParams().id);
-
-
-
-  // Fetch recipe details (steps, ingredients, and tools) from the first API
   const fetchRecipeDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`https://masakin-api-production.up.railway.app/recipes/${id}`);
-      console.log(response.data.data.item.ingredient_groups, "reponse");
-      
-      if (response.data) {
-        setSteps(response.data.data.item.steps || []);
-        setIngredients(response.data.data.item.ingredient_groups || []); // Ingredients from the first API
-        setTools(response.data.data.item.tools || []); // Tools from the first API
+      const response = await axios.get(
+        `https://masakin-api-production.up.railway.app/recipes/${id}`
+      );
+
+      if (response.data && response.data.data && response.data.data.item) {
+        setHowToCook(response.data.data.item.how_to_cooks || []);
+        setIngredients(response.data.data.item.ingredient_groups || []);
+        setTools(response.data.data.item.tools || []);
+      } else {
+        setHowToCook([]);
       }
+
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      setError("Failed to fetch recipe details"); // General error message
-    }
-  };
-
-  // Fetch ingredients from the second API
-//   const fetchAdditionalIngredients = async () => {
-//     try {
-//       const response = await axios.get(`https://masakin-api-production.up.railway.app/recipes/${id}/ingredients`);
-//       if (response.data) {
-//         setAdditionalIngredients(response.data.ingredients || []);
-//         setIngredientsError(null); // Clear any previous errors
-//       }
-//     } catch (err) {
-//       setIngredientsError("Failed to fetch ingredients"); // Specific error for ingredients
-//       setAdditionalIngredients([]); // Clear previous data
-//     }
-//   };
-
-  // Fetch tools from the second API
-  const fetchTools = async () => {
-    try {
-      const response = await axios.get(`https://masakin-api-production.up.railway.app/recipes/${id}/tools`);
-      if (response.data) {
-        setAdditionalTools(response.data.tools || []);
-        setToolsError(null); // Clear any previous errors
-      }
-    } catch (err) {
-      setToolsError("Failed to fetch tools"); // Specific error for tools
-      setAdditionalTools([]); // Clear previous data
+      setError("Failed to fetch recipe details");
+      console.error("Error fetching recipe details:", err);
     }
   };
 
   useEffect(() => {
-    // fetchRecipeDetails(); // Fetch initial data (ingredients, steps, and tools from the first API)
-    // fetchAdditionalIngredients(); // Fetch additional ingredients from the second API
-    // fetchTools(); // Fetch tools from the second API
-    setIngredients(recipe.ingredient_groups);
-    setLoading(false);
-    console.log(recipe.ingredient_groups, "ingredient_groups");
+    if (recipe && recipe.how_to_cooks) {
+      setHowToCook(recipe.how_to_cooks);
+      setIngredients(recipe.ingredient_groups || []);
+      setTools(recipe.tools || []);
+      setLoading(false);
+    } else {
+      fetchRecipeDetails();
+    }
   }, [id, recipe]);
 
-  // If the data is still loading, show a loading state
-  if (loading && !error) return <div className="text-center text-xl">Loading...</div>;
-  
-  // Show a general error message if the fetch failed
+  if (loading) return <div className="text-center text-xl">Loading...</div>;
+
   if (error) return <div className="text-center text-red-600">{error}</div>;
 
   const parseImageUrls = (img_urls) => {
@@ -96,129 +64,176 @@ const IngredientsList = ({recipe}) => {
     return [];
   };
 
+  const informationTab = () => {
+    return (
+      <div>
+        <div className="flex justify-between">
+          <div className="flex gap-1"> 
+            <img src={serving} alt="serving" />
+            <p>{porsi} Porsi</p>
+          </div>
+          <div>
+            <h3 className="font-bold">
+              {activeTab === "bahan" && "Bahan-bahan"}
+              {activeTab === "alat" && "Alat"}
+              {activeTab === "caraMasak" && "Langkah Memasak"}
+            </h3>
+          </div>
+          <div>
+            {activeTab === "bahan" && (
+              <p>{ingredients ? ingredients.length : 0} Bahan</p>
+            )}
+            {activeTab === "alat" && <p>{tools ? tools.length : 0} Alat</p>}
+            {activeTab === "caraMasak" && (
+              <p>{howToCook ? howToCook.length : 0} Langkah</p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "bahan":
         return (
           <div>
-            {/* Ingredients from the first API */}
-            {/* <ul className="space-y-2">
-              {ingredients.length > 0 ? (
-                ingredients.map((ingredient, index) => (
-                  <li key={index} className="bg-red-500 p-4 rounded-lg shadow-md">
-                    <p>{ingredient.name}</p>
-                  </li>
-                ))
-              ) : (
-                <p>No ingredients available from the first API</p>
-              )}
-            </ul> */}
-
-            {/* Error or data from the second API */}
+            {informationTab()}
             <ul className="space-y-2 mt-2">
-                  { ingredients && (
-                    ingredients.map((ingredient_group, index) => (
-                      <li key={index} className="bg-purple-100 p-4 rounded-lg shadow-md">
-                        <p>{ingredient_group.group_name}</p>
-                        
-                      </li>
-                    ))
-                  ) 
-                  }
-                </ul>
+              {ingredients && ingredients.length > 0 ? (
+                ingredients
+                  .filter(
+                    (ingredient_group) =>
+                      ingredient_group.group_name === "Bahan Utama" ||
+                      ingredient_group.group_name === "Bumbu Dasar"
+                  )
+                  .map((ingredient_group, index) => (
+                    <li
+                      key={index}
+                      className="p-4 rounded-lg shadow-md text-center">
+                      <p>{ingredient_group.group_name}</p>
+                      <ul className="space-y-2 mt-2">
+                        {ingredient_group.ingredients &&
+                        ingredient_group.ingredients.length > 0 ? (
+                          ingredient_group.ingredients.map(
+                            (ingredient, idx) => (
+                              <li
+                                key={idx}
+                                className="bg-purple-100 p-2 rounded-lg shadow-md">
+                                <p className="flex flex-row-reverse justify-between">
+                                  <span>{ingredient.nama_bahan}</span>
+                                  <span>{ingredient.takaran}</span>
+                                </p>
+                              </li>
+                            )
+                          )
+                        ) : (
+                          <p>No ingredients available in this group</p>
+                        )}
+                      </ul>
+                    </li>
+                  ))
+              ) : (
+                <p>No ingredient groups available</p>
+              )}
+            </ul>
           </div>
         );
+
       case "alat":
         return (
           <div>
-            {/* Tools from the first API */}
-            <ul className="space-y-2">
-              {tools.length > 0 ? (
+            {informationTab()}
+
+            <ul className="space-y-2 mt-2 p-4">
+              {tools && tools.length > 0 ? (
                 tools.map((tool, index) => (
-                  <li key={index} className="bg-purple-100 p-1 rounded-lg shadow-md">
-                    <p>{tool.name}</p>
+                  <li
+                    key={index}
+                    className="bg-purple-100 p-1 rounded-lg shadow-md p-2">
+                    <p>{tool.nama_alat}</p>
                   </li>
                 ))
               ) : (
-                <p>No tools available from the first API</p>
+                <p>No tools available</p>
               )}
             </ul>
-
-            {/* Error or data from the second API */}
-            {toolsError ? (
-              <p className="text-red-600">{toolsError}</p>
-            ) : (
-              <>
-                <ul className="space-y-2 mt-2">
-                  {additionalTools.length > 0 ? (
-                    additionalTools.map((tool, index) => (
-                      <li key={index} className="bg-purple-100 p-1 rounded-lg shadow-md">
-                        <p>{tool.name}</p>
-                      </li>
-                    ))
-                  ) : (
-                    <p>No additional tools available</p>
-                  )}
-                </ul>
-              </>
-            )}
           </div>
         );
+
       case "caraMasak":
-      default:
         return (
-          <ol className="space-y-2">
-            {steps.length > 0 ? (
-              steps.map((step) => (
-                <li key={step.id} className="bg-purple-100 p-2 rounded-lg shadow-md">
+          <div>
+            {informationTab()}
+            <ol className="space-y-2 p-4">
+              {howToCook?.map((step, index) => (
+                <li
+                  key={index}
+                  className="bg-purple-100 p-2 rounded-lg shadow-md">
                   <p>{step.description}</p>
-                  {step.img_urls && parseImageUrls(step.img_urls).length > 0 && (
-                    <div className="mt-2">
-                      {parseImageUrls(step.img_urls).map((img, index) => (
-                        <img key={index} src={img} alt={`Step ${step.id}`} className="mt-2 rounded-lg shadow-md"/>
-                      ))}
-                    </div>
-                  )}
+                  {step.img_urls &&
+                    parseImageUrls(step.img_urls).length > 0 && (
+                      <div className="mt-2">
+                        {parseImageUrls(step.img_urls).map((img, imgIndex) => (
+                          <img
+                            key={imgIndex}
+                            src={img}
+                            alt={`howToCook ${step.id}`}
+                            className="mt-2 rounded-lg shadow-md"
+                          />
+                        ))}
+                      </div>
+                    )}
                 </li>
-              ))
-            ) : (
-              <p>No cooking steps available</p>
-            )}
-          </ol>
+              ))}
+              {(!howToCook || howToCook.length === 0) && (
+                <p>No cooking steps available</p>
+              )}
+            </ol>
+          </div>
         );
     }
   };
 
+  // Hardcoded portion
+  const porsi = 4;
+
   return (
     <div className="container mx-auto p-2">
-      <h2 className="text-lg font-semibold text-center mb-6">Recipe Details</h2>
-      
-      <div className="flex justify-center justify-between mb-6 text-[#7E9f10]">
+      <div className="flex justify-center justify-between mb-6 text-[#7E9f10] mt-4">
         <button
           onClick={() => setActiveTab("bahan")}
           className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 
-            ${activeTab === "bahan" ? "bg-[#7E9f10] text-white" : "bg-white text-[#7E9f10]"}`}
-        >
+            ${
+              activeTab === "bahan"
+                ? "bg-[#7E9f10] text-white"
+                : "bg-white text-[#7E9f10]"
+            }`}>
           Bahan-bahan
         </button>
         <button
           onClick={() => setActiveTab("alat")}
           className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 
-            ${activeTab === "alat" ? "bg-[#7E9f10] text-white" : "bg-white text-[#7E9f10]"}`}
-        >
+            ${
+              activeTab === "alat"
+                ? "bg-[#7E9f10] text-white"
+                : "bg-white text-[#7E9f10]"
+            }`}>
           Alat
         </button>
         <button
           onClick={() => setActiveTab("caraMasak")}
           className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 
-            ${activeTab === "caraMasak" ? "bg-[#7E9f10] text-white" : "bg-white text-[#7E9f10]"}`}
-        >
+            ${
+              activeTab === "caraMasak"
+                ? "bg-[#7E9f10] text-white"
+                : "bg-white text-[#7E9f10]"
+            }`}>
           Cara Masak
         </button>
       </div>
 
-      {/* Render content based on active tab */}
-      <div>{renderTabContent()}</div>
+      {renderTabContent()}
     </div>
   );
 };
