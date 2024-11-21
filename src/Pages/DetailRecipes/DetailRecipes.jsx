@@ -8,11 +8,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
-import topikoki from "../../Asset/topikoki.svg"; 
+import topikoki from "../../Asset/topikoki.svg";
 import ActiveTab from "../../Components/ActiveTab/ActiveTab";
 import Layout from "../Layout";
 
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
 const RecipeDetails = () => {
+  const [recipe, setRecipe] = useState(null);
+  const [ratings, setRatings] = useState(null); // State to store ratings
+  const [id] = useState(useParams().id);
   const [recipeName, setRecipeName] = useState("");
   const [recipeImage, setRecipeImage] = useState("");
   const [recipeStar, setRecipeStar] = useState(0);
@@ -20,33 +26,48 @@ const RecipeDetails = () => {
   const [recipeVideo, setRecipeVideo] = useState("");
   const [recipeDifficulty, setRecipeDifficulty] = useState(0);
   const [recipeTime, setRecipeTime] = useState("");
+  const [ingredient_groups, setIngredient_groups] = useState(null);
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const getRecipeAndRatings = async () => {
       try {
-        const response = await fetch("https://api.example.com/recipe-details");
-        const data = await response.json();
+        // Fetch recipe details
+        const recipeResponse = await axios.get(
+          `https://masakin-api-production.up.railway.app/recipes/${id}`
+        );
+        const recipeData = recipeResponse.data.data.item;
+        setRecipe(recipeData);
 
-        setRecipeName(data.name);
-        setRecipeImage(data.image);
-        setRecipeStar(data.Star);
-        setRecipeDescription(data.description);
-        setRecipeVideo(data.videoUrl);
-        setRecipeDifficulty(data.difficulty);
-        setRecipeTime(data.time);
+        // Set initial recipe state
+        setRecipeName(recipeData.name);
+        setRecipeImage(recipeData.img_banner);
+        setRecipeStar(recipeData.rating ? recipeData.rating.stars : 0);
+        setRecipeDescription(recipeData.description);
+        setRecipeVideo(recipeData.video_url);
+        setRecipeDifficulty(recipeData.difficulty);
+        setRecipeTime(recipeData.estimated_time);
+        setIngredient_groups(recipeData.ingredient_groups);
+        setRecipe(recipeData);
+
+    
+        console.log(recipeData.ingredient_groups, "reponse");
+
+        // Fetch ratings
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log(error);
       }
     };
 
-    fetchData();
-  }, []);
+    getRecipeAndRatings();
+  }, [id]);
 
   const renderStars = (stars) => {
-    const fullStars = Math.floor(stars);
-    const halfStar = stars % 1 >= 0.5 ? 1 : 0;
+    const validStars = Number.isFinite(stars) ? stars : 0;
+    const fullStars = Math.floor(validStars);
+    const halfStar = validStars % 1 >= 0.5 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStar;
 
     return (
@@ -77,38 +98,34 @@ const RecipeDetails = () => {
   };
 
   const renderDifficulty = (difficulty) => {
+    difficulty = Math.min(difficulty, 3);
     const fullDiff = Math.floor(difficulty);
     const halfDiff = difficulty % 1 >= 0.5 ? 1 : 0;
     const emptyDiff = 3 - fullDiff - halfDiff;
 
     return (
-      <div className="flex gap-1 ">
+      <div className="flex gap-1">
         {Array(fullDiff)
           .fill()
           .map((_, index) => (
             <img
               key={`full-${index}`}
-              src={topikoki} 
+              src={topikoki}
               alt="Topikoki"
               className="flex"
             />
           ))}
         {halfDiff > 0 && (
-          <img
-            key="half"
-            src={topikoki} 
-            alt="Topikoki"
-            className=""
-          />
+          <img key="half" src={topikoki} alt="Topikoki" className="" />
         )}
         {Array(emptyDiff)
           .fill()
           .map((_, index) => (
             <img
               key={`empty-${index}`}
-              src={topikoki} 
+              src={topikoki}
               alt="Topikoki"
-              className="filter grayscale text-xl mr-1"
+              className="filter grayscale"
             />
           ))}
       </div>
@@ -124,121 +141,112 @@ const RecipeDetails = () => {
   };
 
   return (
-   <Layout>
-     
+    <Layout>
       <div className="p-6 px-6 bg-white rounded-lg shadow-lg max-w-sm w-full">
-        <div className="w-full flex justify-start ">
-          <FontAwesomeIcon
-            icon={faArrowLeft}
-            className="text-xl text-gray-700 cursor-pointer"
-            onClick={() => window.history.back()}
-          />
-        </div>
-
-        <h1 className="mt-2 text-3xl font-normal text-center">
-          {recipeName || "Bulgogi"}
-        </h1>
-
-        <div className="mt-4 w-full">
-          <img
-            src={recipeImage || "https://food-fanatic-res.cloudinary.com/iu/s--v4QC2NtY--/t_full/cs_srgb,f_auto,fl_strip_profile.lossy,q_auto:420/v1629740866/beef-bulgogi-image.jpg"}
-            alt={recipeName || "Bulgogi"}
-            style={{ width: '100%', height: '145px' }}
-            className="w-full h-auto object-cover rounded-xl shadow-md"
-          />
-        </div>
-
-        <div className="flex justify-between mt-4 text-md">
-          <div className="flex items-center justify-center text-gray-400 text-md">
-            <div className="text-center">
-              <span className="font-bold text-lg">
-                <FontAwesomeIcon className="text-yellow-500 mr-2" />
-              </span>
-              {renderStars(recipeStar || 4.5)}
+        {/* Back button */}
+        {recipe && (
+          <>
+            <div className="w-full flex justify-start">
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                className="text-xl text-gray-700 cursor-pointer"
+                onClick={() => window.history.back()}
+              />
             </div>
 
-            <div className="flex items-center justify-center text-gray-400 text-lg ml-2">
-              <span className="font-bold text-md">
-                <FontAwesomeIcon
-                  icon={faClock}
-                  className="text-gray-400 mr-1 text-xl"
-                />
-              </span>
-              {recipeTime || "50"}
-              <p className="text-center text-gray-400 ml-1 text-md">menit</p>
+            {/* Title and Banner */}
+            <div className="mt-2 text-2xl font-normal text-center">
+              {recipeName}
             </div>
-          </div>
+            <img
+              src={recipeImage}
+              alt={recipeName}
+              style={{ width: "100%", height: "145px" }}
+              className="w-full h-auto object-cover rounded-xl shadow-md"
+            />
 
-          <div className="flex items-center justify-center text-gray-400 text-lg ml-2">
-            <div className="text-center flex-1">
-              <span className="font-bold text-lg">
-                <FontAwesomeIcon className="gap-5" />
-              </span>
-              {renderDifficulty(recipeDifficulty || 2.1)}
-            </div>
+            {/* Recipe Info */}
+            <div className="flex justify-between mt-4 text-sm">
+              <div className="flex items-center justify-center text-gray-400 text-base">
+                <div className="text-center">
+                  <span className="font-bold text-lg">
+                    <FontAwesomeIcon className="text-yellow-500 mr-2" />
+                  </span>
+                  {recipe && renderStars(recipe?.rating??0)}
+                </div>
 
-            <div className="text-center ml-4">
-              <span className="font-bold text-lg">
-                <FontAwesomeIcon
-                  icon={faBookBookmark}
-                  className="text-green-700 text-xl"
-                />
-              </span>
-            </div>
-          </div>
-        </div>
+                <div className="flex items-center justify-center text-gray-400 text-lg ml-2">
+                  <span className="font-bold text-md">
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      className="text-gray-400 mr-1 text-xl"
+                    />
+                  </span>
+                  <p className="text-base">{recipeTime}</p>
+                </div>
+              </div>
 
-        <div className="flex-row text-[14.5px] font-">
-          <p className="text-left mt-4 mb-3">
-            {recipeDescription}
-            Bulgogi adalah daging sapi panggang klasik khas Korea yang lezat,
-            cocok dinikmati saat makan siang ataupun makan malam.
-          </p>
+              <div className="flex items-center justify-center text-gray-400 text-lg ml-2">
+                <div className="text-center flex-1">
+                  <span className="font-bold text-lg"></span>
+                  {renderDifficulty(recipeDifficulty || 2.1)}
+                </div>
 
-          <p className="mb-3">
-            Dengan langkah-langkah yang sederhana, Bulgogi sangat mudah untuk
-            dibuat.
-          </p>
-
-          <p className="mb-3">
-            Hidangkan Bulgogi bersama nasi dan kimchi untuk sensasi makan yang
-            benar-benar autentik.
-          </p>
-        </div>
-
-        <div
-          className="mt-4 text-center bg-[#DF184F] p-2 rounded-xl cursor-pointer mt-9"
-          onClick={openModal}>
-          <span className="text-white font-normal">
-            Lihat Video Panduan Memasak
-          </span>
-        </div>
-
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-            <div className="relative bg-white rounded-lg w-fit " style={{ width: '460px'}}>
-              <button
-                onClick={closeModal}
-                className="absolute top-[-33px] right-2 text-white text-2xl">
-                <FontAwesomeIcon icon={faCircleXmark} />
-              </button>
-              <div className="flex justify-center items-center">
-                <iframe
-                  src={recipeVideo || "https://www.youtube.com/embed/74a_Y1QPACg"}
-                  style={{ width: '100%', height: '315px' }}
-                  allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  title="Cooking Video"></iframe>
+                <div className="text-center ml-4">
+                  <span className="font-bold text-lg">
+                    <FontAwesomeIcon
+                      icon={faBookBookmark}
+                      className="text-green-700 text-xl"
+                    />
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+
+            {/* Recipe Description */}
+            <div className="flex-row text-[14.5px] ">
+              <p className="text-left mt-4 mb-3 p-2">{recipeDescription}</p>
+            </div>
+
+            {/* Video Button */}
+            <div
+              className="mt-4 text-center bg-[#DF184F] p-2 rounded-xl cursor-pointer mt-9"
+              onClick={openModal}>
+              <span className="text-white font-normal">
+                Lihat Video Panduan Memasak
+              </span>
+            </div>
+
+            {/* Video Modal */}
+            {isModalOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+                <div
+                  className="relative bg-white rounded-lg w-fit "
+                  style={{ width: "400px" }}>
+                  <button
+                    onClick={closeModal}
+                    className="absolute top-[-33px] right-2 text-white text-2xl">
+                    <FontAwesomeIcon icon={faCircleXmark} />
+                  </button>
+                  <div className="flex justify-center items-center">
+                    <iframe
+                      src={recipeVideo ||"https://storage.googleapis.com/masak-masak-file/video-1.mp4"}
+                      style={{ width: "100%", height: "315px" }}
+                      allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      title="Cooking Video"></iframe>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         <div>
-          <ActiveTab />
+          
+          {recipe && <ActiveTab recipe={recipe}/>} 
         </div>
-
       </div>
-   </Layout>
+    </Layout>
   );
 };
 
