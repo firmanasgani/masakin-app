@@ -52,6 +52,8 @@ const RecipeDetails = () => {
         setIngredient_groups(recipeData.ingredient_groups);
         setRecipe(recipeData);
 
+        console.log(recipeData.difficulty, "Difficulty Value");
+
     
         console.log(recipeData.ingredient_groups, "reponse");
 
@@ -97,40 +99,43 @@ const RecipeDetails = () => {
     );
   };
 
-  const renderDifficulty = (difficulty) => {
-    difficulty = Math.min(difficulty, 3);
-    const fullDiff = Math.floor(difficulty);
-    const halfDiff = difficulty % 1 >= 0.5 ? 1 : 0;
-    const emptyDiff = 3 - fullDiff - halfDiff;
+ const renderDifficulty = (difficulty) => {
+  // Fallback untuk nilai difficulty yang tidak valid
+  difficulty = difficulty != null && difficulty >= 0 && difficulty <= 3 ? difficulty : 2; // fallback ke 2 jika tidak valid
+  
+  const fullDiff = Math.floor(difficulty);
+  const halfDiff = difficulty % 1 >= 0.5 ? 1 : 0;
+  const emptyDiff = 3 - fullDiff - halfDiff;
 
-    return (
-      <div className="flex gap-1">
-        {Array(fullDiff)
-          .fill()
-          .map((_, index) => (
-            <img
-              key={`full-${index}`}
-              src={topikoki}
-              alt="Topikoki"
-              className="flex"
-            />
-          ))}
-        {halfDiff > 0 && (
-          <img key="half" src={topikoki} alt="Topikoki" className="" />
-        )}
-        {Array(emptyDiff)
-          .fill()
-          .map((_, index) => (
-            <img
-              key={`empty-${index}`}
-              src={topikoki}
-              alt="Topikoki"
-              className="filter grayscale"
-            />
-          ))}
-      </div>
-    );
-  };
+  return (
+    <div className="flex gap-1">
+      {Array(fullDiff)
+        .fill()
+        .map((_, index) => (
+          <img
+            key={`full-${index}`}
+            src={topikoki}
+            alt="Topikoki"
+            className="flex"
+          />
+        ))}
+      {halfDiff > 0 && (
+        <img key="half" src={topikoki} alt="Topikoki" className="" />
+      )}
+      {Array(emptyDiff)
+        .fill()
+        .map((_, index) => (
+          <img
+            key={`empty-${index}`}
+            src={topikoki}
+            alt="Topikoki"
+            className="filter grayscale"
+          />
+        ))}
+    </div>
+  );
+};
+
 
   const openModal = () => {
     setIsModalOpen(true);
