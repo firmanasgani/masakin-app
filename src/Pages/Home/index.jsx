@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { SearchInput } from "../../Components/Inputs";
 import Layout from "../Layout";
 import CardNewRecipes from "../../Components/Cards/CardNewRecipes";
+import { AuthContext } from "../../Context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
   const [activeCategory, setActiveCategory] = useState("Semua");
+
+  if (!user) {
+    return <Navigate to={"/signin"} replace />;
+  }
 
   return (
     <Layout>
       <div className="h-screen flex flex-col m-10">
         <div className="flex flex-row items-center justify-between gap-2 mt-10">
-          <div className="text-2xl font-bold">Hello Budi</div>
+          <div className="text-2xl font-bold">Hello {user.full_name}</div>
           <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-            <span className="font-bold text-white text-2xl">B</span>
+            <span className="font-bold text-white text-2xl">
+              {user.full_name.charAt(0)}
+            </span>
           </div>
         </div>
         <div className="text-md">Ingin rasa apa hari ini?</div>
@@ -73,10 +82,15 @@ const Home = () => {
                 }}
               >
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-transparent to-black bg-opacity-50 p-2 flex flex-col gap-1 w-full">
-                <h1 className="text-xl font-bold text-white">{food}</h1>
+                  <h1 className="text-xl font-bold text-white">{food}</h1>
                   <div className="flex flex-row gap-1 text-sm">
                     {[...Array(5)].map((_, index) => (
-                      <span key={index} className="text-yellow-500 text-xs material-icons">star</span>
+                      <span
+                        key={index}
+                        className="text-yellow-500 text-xs material-icons"
+                      >
+                        star
+                      </span>
                     ))}
                   </div>
                   <div className="flex flex-row justify-between gap-1">
@@ -86,10 +100,11 @@ const Home = () => {
                     </span>
                     <span className="text-white material-icons">bookmark</span>
                   </div>
-              </div>
+                </div>
               </div>
             )
-          )}</div>
+          )}
+        </div>
       </div>
     </Layout>
   );
