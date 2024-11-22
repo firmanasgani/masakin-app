@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import serving from "../../Asset/serving.svg";
-import { get } from "../../utils/ApiInterceptors";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const IngredientsList = ({ recipe }) => {
   const [howToCook, setHowToCook] = useState(null);
@@ -10,19 +11,28 @@ const IngredientsList = ({ recipe }) => {
   const [tools, setTools] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("caraMasak");
+  const [activeTab, setActiveTab] = useState("bahan");
+  const [ingredients_images, setIngredients_images] = useState(null);
+  const [inputValue, setInputValue] = useState("");
 
   const { id } = useParams();
+
+  // console.log(howToCook, "howToCook");
 
   const fetchRecipeDetails = async () => {
     try {
       setLoading(true);
-      const response = await get(`/recipes/${id}`);
+      const response = await axios.get(
+        `https://masakin-api-production.up.railway.app/recipes/${id}`
+      );
 
       if (response.data && response.data.data && response.data.data.item) {
         setHowToCook(response.data.data.item.how_to_cooks || []);
         setIngredients(response.data.data.item.ingredient_groups || []);
         setTools(response.data.data.item.tools || []);
+        setIngredients_images(
+          response.data.data.item.ingredient_groups[0].ingredients[1].image
+        );
       } else {
         setHowToCook([]);
       }
@@ -40,7 +50,11 @@ const IngredientsList = ({ recipe }) => {
       setHowToCook(recipe.how_to_cooks);
       setIngredients(recipe.ingredient_groups || []);
       setTools(recipe.tools || []);
+      setIngredients_images(
+        recipe.ingredient_groups[0].ingredients[1].image || []
+      );
       setLoading(false);
+      console.log(recipe.ingredient_groups[0].ingredients[1].image, "popup");
     } else {
       fetchRecipeDetails();
     }
@@ -73,9 +87,9 @@ const IngredientsList = ({ recipe }) => {
           </div>
           <div>
             <h3 className="font-bold">
-              {activeTab === "bahan" && "Bahan-bahan"}
-              {activeTab === "alat" && "Alat"}
-              {activeTab === "caraMasak" && "Langkah Memasak"}
+              {activeTab === "bahan" && "Masakan"}
+              {activeTab === "alat" && "Alat-alat"}
+              {activeTab === "caraMasak" && "Cara Memasak"}
             </h3>
           </div>
           <div>
@@ -116,6 +130,7 @@ const IngredientsList = ({ recipe }) => {
                             (ingredient, idx) => (
                               <li
                                 key={idx}
+                                onClick={() => showSwalIngredient(ingredient)}
                                 className="bg-purple-100 p-2 rounded-lg ">
                                 <p className="flex flex-row-reverse justify-between">
                                   <span>{ingredient.nama_bahan}</span>
@@ -162,21 +177,33 @@ const IngredientsList = ({ recipe }) => {
             {informationTab()}
             <ol className="space-y-2 p-4">
               {howToCook?.map((step, index) => (
-                <li key={index} className="bg-purple-100 p-2 rounded-lg ">
-                  <p>{step.description}</p>
-                  {step.img_urls &&
-                    parseImageUrls(step.img_urls).length > 0 && (
-                      <div className="mt-2">
-                        {parseImageUrls(step.img_urls).map((img, imgIndex) => (
+                <li key={index} className=" p-2 rounded-lg ">
+                  <p>
+                    {index + 1}.{step.description}
+                  </p>
+                  {step.images && parseImageUrls(step.images).length > 0 ? (
+                    <div className="mt-2 flex flex-wrap justify-evenly">
+                      {parseImageUrls(step.images).map((images, imgIndex) => {
+                        console.log("Displaying image from URL:", images);
+                        return (
                           <img
                             key={imgIndex}
-                            src={img}
+                            src={images.img_url}
                             alt={`howToCook ${step.id}`}
-                            className="mt-2 rounded-lg "
+                            style={{ width: "100px" }}
+                            onClick={() => showSwalHowToCook(images.img_url)}
+                            className="mt-2 rounded-lg"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "https://via.placeholder.com/150"; // Placeholder image
+                            }}
                           />
-                        ))}
-                      </div>
-                    )}
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p>No image available for this step</p>
+                  )}
                 </li>
               ))}
               {(!howToCook || howToCook.length === 0) && (
@@ -191,8 +218,43 @@ const IngredientsList = ({ recipe }) => {
   // Hardcoded portion
   const porsi = 4;
 
+  const showSwalIngredient = (ingredient) => {
+    Swal.fire({
+      text: ingredient.description,
+      imageUrl: ingredient.image || "https://via.placeholder.com/150",
+      imageWidth: 400,
+      imageHeight: 200,
+      width: "370px",
+      imageAlt: "Custom image",
+    });
+  };
+
+  const showSwalHowToCook = (how_to_cooks) => {
+    Swal.fire({
+      imageUrl: how_to_cooks || "https://via.placeholder.com/150",
+      imageWidth: 400,
+      imageHeight: 200,
+      width: "370px",
+      imageAlt: "Custom image",
+      confirmButtonText: `Kembali`,
+      confirmButtonColor: "#DF184F",
+      customClass: {
+        confirmButton: "custom-confirm-button",
+      },
+    });
+
+    const style = document.createElement("style");
+    style.innerHTML = `
+    .custom-confirm-button {
+      width: 280px; 
+      font-size: 16px;
+    }
+  `;
+    document.head.appendChild(style);
+  };
+
   return (
-    <div className="container mx-auto p-2">
+    <div className="container mx-auto font-[14.5px">
       <div className="flex justify-center justify-between mb-6 text-[#7E9f10] mt-4">
         <button
           onClick={() => setActiveTab("bahan")}
@@ -202,7 +264,7 @@ const IngredientsList = ({ recipe }) => {
                 ? "bg-[#7E9f10] text-white"
                 : "bg-white text-[#7E9f10]"
             }`}>
-          Bahan-bahan
+          Masakan
         </button>
         <button
           onClick={() => setActiveTab("alat")}
@@ -222,7 +284,7 @@ const IngredientsList = ({ recipe }) => {
                 ? "bg-[#7E9f10] text-white"
                 : "bg-white text-[#7E9f10]"
             }`}>
-          Cara Masak
+          Cara Memasak
         </button>
       </div>
 
