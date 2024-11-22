@@ -7,19 +7,42 @@ import { useFetchLatestRecipes } from "../../hooks/useFetchLatestRecipes";
 import { useFetchPopularRecipe } from "../../hooks/useFetchPopularRecipe";
 import { AuthContext } from "../../Context/AuthContext";
 import { Navigate } from "react-router-dom";
+
 const Home = () => {
   const { user } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [ recipesData, setRecipes ] = useState([]);
+  const [category, setCategory] = useState(0);
+  const [search, setSearch] = useState("");
   const { recipes, error, loading } = useFetchLatestRecipes();
   const { recipes: popularRecipes, error: popularError, loading: popularLoading } = useFetchPopularRecipe();
-  const [search, setSearch] = useState("");
   const onSearch = () => {};
+  const countries = recipes.map((item) => item.category);
+  const filteredCountries = countries
+    .map((country) => ({ id: country.id, name: country.name }))
+    .filter((value, index, self) =>
+      index === self.findIndex((t) => t.id === value.id && t.name === value.name)
+    );
 
   if (!user) {
     return <Navigate to="/signin" />;
   }
 
   const handleLogout = () => {};
+
+  const handleCategorySelect = (countryId) => {
+    if (countryId === 0) {
+      setRecipes(recipes.items);
+      setCategory(0);
+      return;
+    }
+
+    const filteredRecipes = recipes.filter((recipe) => recipe.category?.id === countryId);
+    console.log("Recipes:", recipes)
+   setRecipes(filteredRecipes);
+    setCategory(countryId);
+  };
+
   return (
     <Layout>
       <div className="h-screen flex flex-col m-10">
@@ -54,7 +77,27 @@ const Home = () => {
           onSearch={onSearch}
         />
 
-        <div className="flex flex-col  gap-2 mt-10">
+        <div className="flex flex-col gap-2 mt-10">
+          <div className="flex flex-row gap-2 overflow-x-auto">
+            <button
+              key={0}
+              className={`w-full px-4 py-2 rounded ${category === 0 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+              onClick={() => handleCategorySelect(0)}
+            >
+              Semua
+            </button>
+            {filteredCountries.map((country) => (
+              <button
+                key={country.id}
+                className={`w-full px-4 py-2 rounded ${
+                  category === country.id ? "bg-green-500 text-white" : "bg-gray-200"
+                }`}
+                onClick={() => handleCategorySelect(country.id)}
+              >
+                {country.name}
+              </button>
+            ))}
+          </div>
           <h1 className="text-xl font-bold">Resep Baru</h1>
           {loading ? (
             <div className="flex justify-center items-center text-gray-500 text-lg">Loading...</div>
@@ -62,32 +105,44 @@ const Home = () => {
             <div>{error.message}</div>
           ) : (
             <div className="flex flex-row gap-2 overflow-x-auto">
-              {recipes.map((recipe) => (
-                <CardNewRecipes recipe={recipe} key={recipe.id} />
-              ))}
+              {category === 0 ? (
+                recipes.map((recipe) => (
+                  <CardNewRecipes recipe={recipe} key={recipe.id} />
+                ))
+              ) : (
+                recipesData.map((recipe) => (
+                  <CardNewRecipes recipe={recipe} key={recipe.id} />
+                ))
+              )}
             </div>
           )}
         </div>
 
-        <div className="flex flex-col  gap-2 mt-10">
-          <h1 className="text-xl font-bold">Resep Poupular</h1>
+        <div className="flex flex-col gap-2 mt-10">
+          <h1 className="text-xl font-bold">Resep Popular</h1>
           {popularLoading ? (
             <div className="flex justify-center items-center text-gray-500 text-lg">Loading...</div>
           ) : popularError ? (
             <div>{popularError.message}</div>
           ) : (
             <div className="flex flex-row gap-2 overflow-x-auto">
-              {popularRecipes.map((recipe) => (
-                <CardPopularRecipes recipe={recipe} key={recipe.id} />
-              ))}
+               {category === 0 ? (
+                popularRecipes.map((recipe) => (
+                  <CardPopularRecipes recipe={recipe} key={recipe.id} />
+                ))
+              ) : (
+                recipesData.map((recipe) => (
+                  <CardPopularRecipes recipe={recipe} key={recipe.id} />
+                ))
+              )}
+              
             </div>
           )}
         </div>
-
-
       </div>
     </Layout>
   );
 };
 
 export default Home;
+

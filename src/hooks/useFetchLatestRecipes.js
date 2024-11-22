@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { get } from "../utils/ApiInterceptors";
 
-export const useFetchLatestRecipes = () => {
+export const useFetchLatestRecipes = ( ) => {
     const token = localStorage.getItem('access_token');
     const [recipes, setRecipes] = useState([]);
     const [error, setError] = useState(null);
@@ -12,7 +12,8 @@ export const useFetchLatestRecipes = () => {
             isLoading(true);
             try {
                 setError(null)
-                const response = await get('/recipes?page=1&per_page=10&sort_by=created_at&order=desc', {
+                const endpoint = '/recipes?page=1&per_page=100&sort_by=created_at&order=desc' 
+                const response = await get(endpoint, {
                     'Authorization': `Bearer ${token}`,
                 });
                 setRecipes(response.data.items);
