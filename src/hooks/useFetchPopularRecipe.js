@@ -12,7 +12,8 @@ export const useFetchPopularRecipe = () => {
             isLoading(true);
             try {
                 setError(null)
-                const response = await get('/recipes?page=1&per_page=10', {
+                const endpoint = '/recipes?page=1&per_page=10' 
+                const response = await get(endpoint, {
                     'Authorization': `Bearer ${token}`,
                 });
                 setRecipes(response.data.items);
