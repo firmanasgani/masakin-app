@@ -32,6 +32,7 @@ const SearchPage = () => {
   return (
     <Layout>
       <div className="h-screen flex flex-col m-10">
+        <h1 className="text-3xl font-bold mb-5 text-center">Search Recipes</h1>
         <SearchInput
           placeholder="cari berdasarkan nama atau deskripsi"
           value={search}
