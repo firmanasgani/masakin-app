@@ -226,6 +226,11 @@ const IngredientsList = ({ recipe }) => {
       imageHeight: 200,
       width: "370px",
       imageAlt: "Custom image",
+      confirmButtonText: `Kembali`,
+      confirmButtonColor: "#DF184F",
+      customClass: {
+        confirmButton: "custom-confirm-button",
+      },
     });
   };
 
