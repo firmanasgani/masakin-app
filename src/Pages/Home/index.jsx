@@ -42,9 +42,6 @@ const Home = () => {
    setRecipes(filteredRecipes);
     setCategory(countryId);
   };
-  console.log("Recipes: ", recipesData)
-  console.log("Recipe on filter")
-  console.log(category)
 
   return (
     <Layout>
