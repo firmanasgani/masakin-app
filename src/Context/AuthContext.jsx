@@ -38,7 +38,6 @@ export const AuthProvider = ({ children }) => {
       setError(error);
     }
   };
-
   return (
     <AuthContext.Provider value={{ user: state, handleLogin, error }}>
       {children}
