@@ -16,7 +16,9 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const { recipes, error, loading } = useFetchLatestRecipes();
   const { recipes: popularRecipes, error: popularError, loading: popularLoading } = useFetchPopularRecipe();
-  const onSearch = () => {};
+  const onSearch = () => {
+    window.location.href = `/search?key=${search}`;
+  };
   const countries = recipes.map((item) => item.category);
   const filteredCountries = countries
     .map((country) => ({ id: country.id, name: country.name }))
