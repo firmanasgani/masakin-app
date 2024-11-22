@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL
+  baseURL: "https://masakin-api-production.up.railway.app/"
 });
 
 const apiInterceptor = (method, url, data, headers = {}) => {
