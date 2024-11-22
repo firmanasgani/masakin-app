@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import serving from "../../Asset/serving.svg";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const IngredientsList = ({ recipe }) => {
   const [howToCook, setHowToCook] = useState(null);
@@ -11,6 +13,7 @@ const IngredientsList = ({ recipe }) => {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("bahan");
   const [ingredients_images, setIngredients_images] = useState(null);
+  const [inputValue, setInputValue] = useState("");
 
   const { id } = useParams();
 
@@ -27,7 +30,9 @@ const IngredientsList = ({ recipe }) => {
         setHowToCook(response.data.data.item.how_to_cooks || []);
         setIngredients(response.data.data.item.ingredient_groups || []);
         setTools(response.data.data.item.tools || []);
-        setIngredients_images(response.data.data.item.ingredient_groups[0].ingredients[1].image);
+        setIngredients_images(
+          response.data.data.item.ingredient_groups[0].ingredients[1].image
+        );
       } else {
         setHowToCook([]);
       }
@@ -45,14 +50,15 @@ const IngredientsList = ({ recipe }) => {
       setHowToCook(recipe.how_to_cooks);
       setIngredients(recipe.ingredient_groups || []);
       setTools(recipe.tools || []);
-      setIngredients_images(recipe.ingredient_groups[0].ingredients[1].image || []);
+      setIngredients_images(
+        recipe.ingredient_groups[0].ingredients[1].image || []
+      );
       setLoading(false);
       console.log(recipe.ingredient_groups[0].ingredients[1].image, "popup");
     } else {
       fetchRecipeDetails();
     }
   }, [id, recipe]);
-  
 
   if (loading) return <div className="text-center text-xl">Loading...</div>;
 
@@ -124,6 +130,7 @@ const IngredientsList = ({ recipe }) => {
                             (ingredient, idx) => (
                               <li
                                 key={idx}
+                                onClick={() => showSwalIngredient(ingredient)}
                                 className="bg-purple-100 p-2 rounded-lg ">
                                 <p className="flex flex-row-reverse justify-between">
                                   <span>{ingredient.nama_bahan}</span>
@@ -170,8 +177,10 @@ const IngredientsList = ({ recipe }) => {
             {informationTab()}
             <ol className="space-y-2 p-4">
               {howToCook?.map((step, index) => (
-                <li key={index} className="bg-purple-100 p-2 rounded-lg ">
-                  <p>{step.description}</p>
+                <li key={index} className=" p-2 rounded-lg ">
+                  <p>
+                    {index + 1}.{step.description}
+                  </p>
                   {step.images && parseImageUrls(step.images).length > 0 ? (
                     <div className="mt-2 flex flex-wrap justify-evenly">
                       {parseImageUrls(step.images).map((images, imgIndex) => {
@@ -182,6 +191,7 @@ const IngredientsList = ({ recipe }) => {
                             src={images.img_url}
                             alt={`howToCook ${step.id}`}
                             style={{ width: "100px" }}
+                            onClick={() => showSwalHowToCook(images.img_url)}
                             className="mt-2 rounded-lg"
                             onError={(e) => {
                               e.target.onerror = null;
@@ -208,8 +218,43 @@ const IngredientsList = ({ recipe }) => {
   // Hardcoded portion
   const porsi = 4;
 
+  const showSwalIngredient = (ingredient) => {
+    Swal.fire({
+      text: ingredient.description,
+      imageUrl: ingredient.image || "https://via.placeholder.com/150",
+      imageWidth: 400,
+      imageHeight: 200,
+      width: "370px",
+      imageAlt: "Custom image",
+    });
+  };
+
+  const showSwalHowToCook = (how_to_cooks) => {
+    Swal.fire({
+      imageUrl: how_to_cooks || "https://via.placeholder.com/150",
+      imageWidth: 400,
+      imageHeight: 200,
+      width: "370px",
+      imageAlt: "Custom image",
+      confirmButtonText: `Kembali`,
+      confirmButtonColor: "#DF184F",
+      customClass: {
+        confirmButton: "custom-confirm-button",
+      },
+    });
+
+    const style = document.createElement("style");
+    style.innerHTML = `
+    .custom-confirm-button {
+      width: 280px; 
+      font-size: 16px;
+    }
+  `;
+    document.head.appendChild(style);
+  };
+
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto font-[14.5px">
       <div className="flex justify-center justify-between mb-6 text-[#7E9f10] mt-4">
         <button
           onClick={() => setActiveTab("bahan")}
