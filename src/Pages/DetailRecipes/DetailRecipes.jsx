@@ -14,6 +14,7 @@ import Layout from "../Layout";
 
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { get } from "../../utils/ApiInterceptors";
 
 const RecipeDetails = () => {
   const [recipe, setRecipe] = useState(null);
@@ -27,16 +28,13 @@ const RecipeDetails = () => {
   const [recipeTime, setRecipeTime] = useState("");
   const [ingredient_groups, setIngredient_groups] = useState(null);
 
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const getRecipeAndRatings = async () => {
       try {
         // Fetch recipe details
-        const recipeResponse = await axios.get(
-          `https://masakin-api-production.up.railway.app/recipes/${id}`
-        );
+        const recipeResponse = await get(`/recipes/${id}`);
         const recipeData = recipeResponse.data.data.item;
         setRecipe(recipeData);
 
@@ -53,7 +51,6 @@ const RecipeDetails = () => {
 
         console.log(recipeData.difficulty, "Difficulty Value");
 
-    
         console.log(recipeData.ingredient_groups, "reponse");
 
         // Fetch ratings
@@ -98,43 +95,41 @@ const RecipeDetails = () => {
     );
   };
 
- const renderDifficulty = (difficulty) => {
-  difficulty = difficulty > 3 ? 3 : difficulty; // set difficulty ke 3 jika lebih dari 3
-  
-  const fullDiff = Math.floor(difficulty);
-  const halfDiff = difficulty % 1 >= 0.5 ? 1 : 0;
-  const emptyDiff = 3 - fullDiff - halfDiff;
+  const renderDifficulty = (difficulty) => {
+    difficulty = difficulty > 3 ? 3 : difficulty; // set difficulty ke 3 jika lebih dari 3
 
-  return (
-    <div className="flex gap-1">
-      {Array(fullDiff)
-        .fill()
-        .map((_, index) => (
-          <img
-            key={`full-${index}`}
-            src={topikoki}
-            alt="Topikoki"
-            className="flex"
-          />
-        ))}
-      {halfDiff > 0 && (
-        <img key="half" src={topikoki} alt="Topikoki" className="" />
-      )}
-      {Array(emptyDiff)
-        .fill()
-        .map((_, index) => (
-          <img
-            key={`empty-${index}`}
-            src={topikoki}
-            alt="Topikoki"
-            className="filter grayscale"
-          />
-        ))}
-    </div>
-  );
-};
+    const fullDiff = Math.floor(difficulty);
+    const halfDiff = difficulty % 1 >= 0.5 ? 1 : 0;
+    const emptyDiff = 3 - fullDiff - halfDiff;
 
-
+    return (
+      <div className="flex gap-1">
+        {Array(fullDiff)
+          .fill()
+          .map((_, index) => (
+            <img
+              key={`full-${index}`}
+              src={topikoki}
+              alt="Topikoki"
+              className="flex"
+            />
+          ))}
+        {halfDiff > 0 && (
+          <img key="half" src={topikoki} alt="Topikoki" className="" />
+        )}
+        {Array(emptyDiff)
+          .fill()
+          .map((_, index) => (
+            <img
+              key={`empty-${index}`}
+              src={topikoki}
+              alt="Topikoki"
+              className="filter grayscale"
+            />
+          ))}
+      </div>
+    );
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -176,7 +171,7 @@ const RecipeDetails = () => {
                   <span className="font-bold text-lg">
                     <FontAwesomeIcon className="text-yellow-500 mr-2" />
                   </span>
-                  {recipe && renderStars(recipe?.rating??0)}
+                  {recipe && renderStars(recipe?.rating ?? 0)}
                 </div>
 
                 <div className="flex items-center justify-center text-gray-400 text-lg ml-2">
@@ -234,7 +229,10 @@ const RecipeDetails = () => {
                   </button>
                   <div className="flex justify-center items-center">
                     <iframe
-                      src={recipeVideo ||"https://storage.googleapis.com/masak-masak-file/video-1.mp4"}
+                      src={
+                        recipeVideo ||
+                        "https://storage.googleapis.com/masak-masak-file/video-1.mp4"
+                      }
                       style={{ width: "100%", height: "315px" }}
                       allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
                       title="Cooking Video"></iframe>
@@ -245,10 +243,7 @@ const RecipeDetails = () => {
           </>
         )}
 
-        <div>
-          
-          {recipe && <ActiveTab recipe={recipe}/>} 
-        </div>
+        <div>{recipe && <ActiveTab recipe={recipe} />}</div>
       </div>
     </Layout>
   );

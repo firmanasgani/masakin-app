@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import serving from "../../Asset/serving.svg";
+import { get } from "../../utils/ApiInterceptors";
 
 const IngredientsList = ({ recipe }) => {
   const [howToCook, setHowToCook] = useState(null);
@@ -16,9 +17,7 @@ const IngredientsList = ({ recipe }) => {
   const fetchRecipeDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://masakin-api-production.up.railway.app/recipes/${id}`
-      );
+      const response = await get(`/recipes/${id}`);
 
       if (response.data && response.data.data && response.data.data.item) {
         setHowToCook(response.data.data.item.how_to_cooks || []);
@@ -68,7 +67,7 @@ const IngredientsList = ({ recipe }) => {
     return (
       <div>
         <div className="flex justify-between">
-          <div className="flex gap-1"> 
+          <div className="flex gap-1">
             <img src={serving} alt="serving" />
             <p>{porsi} Porsi</p>
           </div>
@@ -108,9 +107,7 @@ const IngredientsList = ({ recipe }) => {
                       ingredient_group.group_name === "Bumbu Dasar"
                   )
                   .map((ingredient_group, index) => (
-                    <li
-                      key={index}
-                      className="p-4 rounded-lg shadow-md text-center">
+                    <li key={index} className="p-4 rounded-lg text-center">
                       <p>{ingredient_group.group_name}</p>
                       <ul className="space-y-2 mt-2">
                         {ingredient_group.ingredients &&
@@ -119,7 +116,7 @@ const IngredientsList = ({ recipe }) => {
                             (ingredient, idx) => (
                               <li
                                 key={idx}
-                                className="bg-purple-100 p-2 rounded-lg shadow-md">
+                                className="bg-purple-100 p-2 rounded-lg ">
                                 <p className="flex flex-row-reverse justify-between">
                                   <span>{ingredient.nama_bahan}</span>
                                   <span>{ingredient.takaran}</span>
@@ -148,9 +145,7 @@ const IngredientsList = ({ recipe }) => {
             <ul className="space-y-2 mt-2 p-4">
               {tools && tools.length > 0 ? (
                 tools.map((tool, index) => (
-                  <li
-                    key={index}
-                    className="bg-purple-100 p-1 rounded-lg shadow-md p-2">
+                  <li key={index} className="bg-purple-100 p-1 rounded-lg p-2">
                     <p>{tool.nama_alat}</p>
                   </li>
                 ))
@@ -167,9 +162,7 @@ const IngredientsList = ({ recipe }) => {
             {informationTab()}
             <ol className="space-y-2 p-4">
               {howToCook?.map((step, index) => (
-                <li
-                  key={index}
-                  className="bg-purple-100 p-2 rounded-lg shadow-md">
+                <li key={index} className="bg-purple-100 p-2 rounded-lg ">
                   <p>{step.description}</p>
                   {step.img_urls &&
                     parseImageUrls(step.img_urls).length > 0 && (
@@ -179,7 +172,7 @@ const IngredientsList = ({ recipe }) => {
                             key={imgIndex}
                             src={img}
                             alt={`howToCook ${step.id}`}
-                            className="mt-2 rounded-lg shadow-md"
+                            className="mt-2 rounded-lg "
                           />
                         ))}
                       </div>
