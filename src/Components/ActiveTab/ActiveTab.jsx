@@ -110,7 +110,7 @@ const IngredientsList = ({ recipe }) => {
                   .map((ingredient_group, index) => (
                     <li
                       key={index}
-                      className="p-4 rounded-lg shadow-md text-center">
+                      className="p-4 rounded-lg text-center">
                       <p>{ingredient_group.group_name}</p>
                       <ul className="space-y-2 mt-2">
                         {ingredient_group.ingredients &&
@@ -119,7 +119,7 @@ const IngredientsList = ({ recipe }) => {
                             (ingredient, idx) => (
                               <li
                                 key={idx}
-                                className="bg-purple-100 p-2 rounded-lg shadow-md">
+                                className="bg-purple-100 p-2 rounded-lg ">
                                 <p className="flex flex-row-reverse justify-between">
                                   <span>{ingredient.nama_bahan}</span>
                                   <span>{ingredient.takaran}</span>
@@ -150,7 +150,7 @@ const IngredientsList = ({ recipe }) => {
                 tools.map((tool, index) => (
                   <li
                     key={index}
-                    className="bg-purple-100 p-1 rounded-lg shadow-md p-2">
+                    className="bg-purple-100 p-1 rounded-lg p-2">
                     <p>{tool.nama_alat}</p>
                   </li>
                 ))
@@ -169,7 +169,7 @@ const IngredientsList = ({ recipe }) => {
               {howToCook?.map((step, index) => (
                 <li
                   key={index}
-                  className="bg-purple-100 p-2 rounded-lg shadow-md">
+                  className="bg-purple-100 p-2 rounded-lg ">
                   <p>{step.description}</p>
                   {step.img_urls &&
                     parseImageUrls(step.img_urls).length > 0 && (
@@ -179,7 +179,7 @@ const IngredientsList = ({ recipe }) => {
                             key={imgIndex}
                             src={img}
                             alt={`howToCook ${step.id}`}
-                            className="mt-2 rounded-lg shadow-md"
+                            className="mt-2 rounded-lg "
                           />
                         ))}
                       </div>
