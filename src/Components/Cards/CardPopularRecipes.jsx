@@ -10,7 +10,7 @@ const PopularRecipes = ({ recipe, key: i }) => {
   const img_banner = recipe.img_banner;
   return (
     <Link to={`/detail-recipes/${recipe.id}`}
-      className="min-w-[200px] max-w-[200px] h-[250px] bg-cover bg-center rounded-lg shadow-md flex flex-col justify-between items-center"
+      className="min-w-[120px] max-w-[200px] h-[250px] bg-cover bg-center rounded-lg shadow-md flex flex-col justify-between items-center"
       style={{ backgroundImage: `url(${img_banner})` }}
     >
       {/* Footer */}
