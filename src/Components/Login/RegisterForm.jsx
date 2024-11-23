@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    full_name: "",
+    email: "",
+    password: "",
+    confirm_password: "",
   });
 
   const navigate = useNavigate();
@@ -14,14 +16,69 @@ const RegisterForm = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    navigate('/home');
+    if (formData.full_name === "") {
+      Swal.fire("Error", "Please enter your name", "error");
+      return;
+    }
+
+    if (formData.email === "") {
+      Swal.fire("Error", "Please enter your email", "error");
+      return;
+    }
+    if (formData.password === "") {
+      Swal.fire("Error", "Please enter your password", "error");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Password must be at least 6 characters",
+      });
+      return;
+    }
+    if (formData.password !== formData.confirm_password) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Passwords do not match",
+      });
+      return;
+    }
+
+    const FormBody = new FormData();
+    FormBody.append("full_name", formData.full_name);
+    FormBody.append("email", formData.email);
+    FormBody.append("password", formData.password);
+    FormBody.append("confirm_password", formData.confirm_password);
+    const response = await axios.post(
+      process.env.REACT_APP_API_URL + "/users/register",
+      FormBody
+    );
+
+    if (response.status == 200) {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "You have been registered successfully",
+      }).then(() => {
+        navigate("/signin");
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong. Please try again.",
+      });
+      return;
+    }
   };
 
   return (
@@ -36,8 +93,10 @@ const RegisterForm = () => {
             <input
               type="text"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
+              value={formData.full_name}
+              onChange={(e) =>
+                setFormData({ ...formData, full_name: e.target.value })
+              }
               className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Enter Name"
             />
@@ -69,8 +128,10 @@ const RegisterForm = () => {
             <input
               type="password"
               name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
+              value={formData.confirm_password}
+              onChange={(e) =>
+                setFormData({ ...formData, confirm_password: e.target.value })
+              }
               className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Confirm Password"
             />
@@ -83,7 +144,10 @@ const RegisterForm = () => {
           </button>
         </form>
         <p className="mt-4 text-center">
-          Already a member? <a href="/signin" className="text-red-500">Sign in</a>
+          Already a member?{" "}
+          <a href="/signin" className="text-red-500">
+            Sign in
+          </a>
         </p>
       </div>
     </div>
