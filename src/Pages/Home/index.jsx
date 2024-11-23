@@ -30,7 +30,10 @@ const Home = () => {
     return <Navigate to="/signin" />;
   }
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    window.location.href = "/signin";
+  };
 
   const handleCategorySelect = (countryId) => {
     if (countryId === 0) {
